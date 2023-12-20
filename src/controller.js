@@ -108,7 +108,7 @@ class Controller {
             if (!ws.Sheets['СЧЕТ'] || !ws.Sheets['ЗАКАЗ-НАРЯД'])
                 return this.setOrderTask('Не могу прочитать файл, пожалуйста проверьте правильность его заполнения и повторите попытку')
 
-            if (!ws.Sheets['ЗАКАЗ-НАРЯД']?.['M8']?.v || !ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v)
+            if (!ws.Sheets['ЗАКАЗ-НАРЯД']?.['N8']?.v || !ws.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v)
                 return this.setOrderTask('В заказ наряде нет номера или даты готовности, пожалуйста поправьте заказ наряд и повторите попытку')
 
             newOrder(body.path).then(order => this.send(order).then(this.setOrderTask.bind(this)).catch(this.setOrderTask.bind(this)))

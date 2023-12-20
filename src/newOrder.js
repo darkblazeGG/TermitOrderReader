@@ -236,13 +236,13 @@ function newOrder(file) {
                 return publisher
             })
 
-        if (!ws['M8'])
+        if (!ws['N8'])
             return resolve('Нет даты поступления в работу, пожалуйста добавьте ее прежде чем загружать заказ в систему')
-        if (!workbook.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key]?.v === 'Дата готовности заказа')?.match(/\d+/)?.[0])])
+        if (!workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key]?.v === 'Дата готовности заказа')?.match(/\d+/)?.[0])])
             return resolve('Нет даты окончания работы, пожалуйста добавьте ее прежде чем загружать заказ в систему')
 
-        let created = ws['M8']?.v ? ExcelDateToJSDate(ws['M8']?.v) : undefined
-        let lastDate = workbook.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
+        let created = ws['N8']?.v ? ExcelDateToJSDate(ws['N8']?.v) : undefined
+        let lastDate = workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
 
         let stages = [
             {
