@@ -636,11 +636,11 @@ function newOrder(file) {
         }
 
         let order = {
-            number: JSON.parse(ws['M7'].v?.match(/\d+/)[0]),
+            number: JSON.parse(ws['N7'].v?.match(/\d+/)[0]),
             created: created ? new Date(created) : undefined,
             lastDate: lastDate ? new Date(lastDate) : undefined,
             stages,
-            costumer: workbook.Sheets['СЧЕТ']['O6'].v,
+            costumer: workbook.Sheets['СЧЕТ']['P6'].v,
         }
 
         return resolve(order)
