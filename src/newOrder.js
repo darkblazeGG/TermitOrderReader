@@ -1,7 +1,7 @@
 const XLSX = require('xlsx')
 
 const Сarpentry = [/р/, /п/, /с/, /б/]
-const Type = [/прямой/, /фрез/, /f/, /фас кл/, /фасад клиента/]
+const Type = [/прямой/, /фрез/, /f/, /фас кл/, /фасад клиента/, /тумба/]
 
 const Second = 1000
 const Minute = 60 * Second
@@ -137,6 +137,7 @@ function newOrder(file) {
             let P = row[rows[0].findIndex(row => row === 'Категория')]?.toString().toLowerCase().match(Сarpentry[1]) ? 1 : 0
             let H = row[rows[0].findIndex(row => row === 'Категория')]?.toString().toLowerCase().match(Сarpentry[0]) ? 1 : 0
             let G = row[rows[0].findIndex(row => row === 'Категория')]?.toString().toLowerCase().match(Сarpentry[2]) ? 1 : 0
+            let T = row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[5]) && (typeof row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'number' ? round(row[rows[0].findIndex(row => row === 'Кол-во сторон')], 0) : row[rows[0].findIndex(row => row === 'Кол-во сторон')] === '-' ? 0 : 2) === 2 ? 1 : 0
             let Paint = row[rows[0].findIndex(row => row === 'Категория')]?.toString().toLowerCase().match(Сarpentry[3]) ? 1 : 0
             if (Paint)
                 stages.splice(stages.findIndex(stage => stage.stage === 'Покраска'), 1)
@@ -193,7 +194,7 @@ function newOrder(file) {
             } else if (!Paint) {
                 let squere = rows.filter(row => row[rows[0].findIndex(row => row === 'Тип краски')]?.toString().toLowerCase().includes('мат'))
                     .map(row => row[rows[0].findIndex(row => row === 'Площадь')]).reduce((a, b) => a + b, 0)
-                let paintstages = row[rows[0].findIndex(row => row === 'Кол-во сторон')] - 1 + ((row[rows[0].findIndex(row => row === 'Цвет')].toString() || undefined)?.toLowerCase().split(',').length || 1) - 1
+                let paintstages = row[rows[0].findIndex(row => row === 'Кол-во сторон')] - T - 1 + ((row[rows[0].findIndex(row => row === 'Цвет')].toString() || undefined)?.toLowerCase().split(',').length || 1) - 1
                 for (let i = 0; i < paintstages; i++)
                     stages.splice(stages.findIndex(stage => stage.stage === 'Покраска') + 1, 0, {
                         term: 1,
@@ -217,6 +218,7 @@ function newOrder(file) {
                 square2: ((typeof row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'number' ? typeof row[rows[0].findIndex(row => row === 'Кол-во сторон')] : 1) - 1) * row[rows[0].findIndex(row => row === 'Площадь')],
                 thickness: typeof row[rows[0].findIndex(row => row === 'МДФ')] === 'number' ? row[rows[0].findIndex(row => row === 'МДФ')] : 0,
                 description: row[rows[0].findIndex(row => row === 'Примечание')],
+                T,
                 colour: row[rows[0].findIndex(row => row === 'Цвет')],
                 colourType: row[rows[0].findIndex(row => row === 'Тип краски')],
                 sides: typeof row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'number' ? round(row[rows[0].findIndex(row => row === 'Кол-во сторон')], 0) : 2,
@@ -236,10 +238,10 @@ function newOrder(file) {
                 return publisher
             })
 
-        if (!ws['N8'])
-            return resolve('Нет даты поступления в работу, пожалуйста добавьте ее прежде чем загружать заказ в систему')
-        if (!workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key]?.v === 'Дата готовности заказа')?.match(/\d+/)?.[0])])
-            return resolve('Нет даты окончания работы, пожалуйста добавьте ее прежде чем загружать заказ в систему')
+        // if (!ws['N8'])
+        //     return resolve('Нет даты поступления в работу, пожалуйста добавьте ее прежде чем загружать заказ в систему')
+        // if (!workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key]?.v === 'Дата готовности заказа')?.match(/\d+/)?.[0])])
+        //     return resolve('Нет даты окончания работы, пожалуйста добавьте ее прежде чем загружать заказ в систему')
 
         let created = ws['N8']?.v ? ExcelDateToJSDate(ws['N8']?.v) : undefined
         let lastDate = workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
@@ -545,10 +547,24 @@ function newOrder(file) {
                 addition.push(`Л2: ${round(publishers.filter(({ colourType, stages }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак2/) && (stage.stage === 'Полировка' ? stages.find(({ stage }) => stage === 'Полировка') : true)).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`)
             addition = addition.join('\r\n')
 
+            let factvalue = 0
+            for (let publisher of publishers.filter(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)))
+                if (stage.stage === 'Покраска')
+                    if (stages.find(({ stage, factvalue }) => stage === 'Покраска' && factvalue))
+                        factvalue += publisher.square * (typeof publisher.colourType === 'string' && publisher.colourType?.toLowerCase().match(/лак2/) ? 2 : 1)
+                    else
+                        factvalue += publisher.square * (typeof publisher.colourType === 'string' && publisher.colourType?.toLowerCase().match(/лак/) ? 2 : 1)
+                else if (stage.stage.match('Шлифовка'))
+                    factvalue += publisher.square * (publisher.stages.find(({ stage }) => stage === 'Шлифовка к изолятору') ? 20 / 7 : 1)
+                else
+                    factvalue += publisher.square
+            factvalue = round(factvalue, 2)
+
             return {
                 stage: stage.stage,
                 term: Math.max(...publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage)?.term || 0)),
-                value: round(publishers.filter(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).map(({ square, colourType }) => square * (stage.stage === 'Покраска' && typeof colourType === 'string' && colourType?.toLowerCase().match(/лак/) ? 2 : 1)).reduce((a, b) => a + b, 0), 2),
+                value: round(publishers.filter(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
+                factvalue,
                 weekend: stage.weekend,
                 addition,
                 H: publishers.find(publisher => publisher.stages.find(item => item.stage === stage.stage && item.H)) ? true : false
@@ -558,6 +574,45 @@ function newOrder(file) {
             stages.find(stage => stage.H && stage.stage === 'Шлифовка к изолятору').A = true
             stages.find(stage => stage.H && stage.stage === 'Шлифовка к грунту').term -= 1
             stages.find(stage => stage.H && stage.stage === 'Шлифовка к грунту').H = false
+        }
+
+        if (publishers.find(({ T }) => T)) {
+            stages.splice(stages.findIndex(stage => stage.stage === 'Столярка'), 0,
+                {
+                    stage: 'Шлифовка к грунту',
+                    term: Math.ceil(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) / 20),
+                    value: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
+                    factvalue: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
+                    weekend: false,
+                    addition: `Т: ${round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`,
+                },
+                {
+                    stage: 'Нанесение грунта',
+                    term: Math.ceil(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) / 20),
+                    value: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
+                    factvalue: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
+                    weekend: false,
+                    addition: `Т: ${round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`,
+                },
+                {
+                    stage: 'Шлифовка к покраске',
+                    term: Math.ceil(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) / 20),
+                    value: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
+                    factvalue: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
+                    weekend: false,
+                    addition: `Т: ${round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`,
+                }
+            )
+            if (publishers.find(({ T, stages }) => T && stages.find(({ stage }) => stage === 'Покраска')))
+                stages.splice(stages.findIndex(stage => stage.stage === 'Столярка'), 0,
+                    {
+                        stage: 'Покраска',
+                        term: Math.ceil(publishers.filter(({ T, stages }) => T && stages.find(({ stage }) => stage === 'Покраска')).map(({ colourType, square }) => square * (typeof colourType === 'string' && colourType?.toLowerCase().match(/лак2/) ? 2 : 1)).reduce((a, b) => a + b, 0) / 10),
+                        value: round(publishers.filter(({ T, stages }) => T && stages.find(({ stage }) => stage === 'Покраска')).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
+                        factvalue: round(publishers.filter(({ T, stages }) => T && stages.find(({ stage }) => stage === 'Покраска')).map(({ colourType, square }) => square * (typeof colourType === 'string' && colourType?.toLowerCase().match(/лак2/) ? 2 : 1)).reduce((a, b) => a + b, 0), 2),
+                        weekend: false,
+                        addition: `Т: ${round(publishers.filter(({ T, stages }) => T && stages.find(({ stage }) => stage === 'Покраска')).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`,
+                    })
         }
 
         let last = created
@@ -576,6 +631,7 @@ function newOrder(file) {
                     weekend: false,
                     stage: 'Столярка',
                     value: stages[i].value,
+                    factvalue: stages[i].factvalue,
                     addition: ''
                 })
                 delete stages[i + 1].H
@@ -610,7 +666,6 @@ function newOrder(file) {
             }
             if (stages[i].stage === 'Полировка') {
                 stages[i].delay = 2
-                continue
             }
 
             let days = []
@@ -638,11 +693,11 @@ function newOrder(file) {
         }
 
         let order = {
-            number: JSON.parse(ws['N7'].v?.match(/\d+/)[0]),
-            created: created ? new Date(created) : undefined,
-            lastDate: lastDate ? new Date(lastDate) : undefined,
+            number: JSON.parse(ws['N7']?.v?.match(/\d+/)[0] || ws['M7']?.v?.match(/\d+/)[0]),
+            created: /* +new Date(+new Date(2024, 0, 1) + 4 * Hour),// */created,
+            lastDate: /* +new Date(+new Date(2024, 0, 31) + 4 * Hour),// */lastDate,
             stages,
-            costumer: workbook.Sheets['СЧЕТ']['P6'].v,
+            costumer: workbook.Sheets['СЧЕТ']['P6']?.v || workbook.Sheets['СЧЕТ']['O6']?.v,
         }
 
         return resolve(order)
