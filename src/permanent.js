@@ -75,9 +75,11 @@ async function permanent(controller) {
             if (!ws.Sheets['СЧЕТ'] || !ws.Sheets['ЗАКАЗ-НАРЯД'])
                 return
 
-            return ws.Sheets['ЗАКАЗ-НАРЯД']?.['M8']?.v && !`${ws.Sheets['СЧЕТ']['O9']?.v}`?.toLowerCase()?.match(/барнаул/) && !`${ws.Sheets['ЗАКАЗ-НАРЯД']['M9']?.v}`?.toLowerCase()?.match(/барнаул/) &&
-                ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v &&
-                ExcelDateToJSDate(ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) + Day >= LastRead
+            return (ws.Sheets['ЗАКАЗ-НАРЯД']?.['M8']?.v || ws.Sheets['ЗАКАЗ-НАРЯД']?.['N8']?.v) && !`${ws.Sheets['СЧЕТ']['O9']?.v}`?.toLowerCase()?.match(/барнаул/) && !`${ws.Sheets['ЗАКАЗ-НАРЯД']['M9']?.v}`?.toLowerCase()?.match(/барнаул/) &&
+                (ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v &&
+                    ExcelDateToJSDate(ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) + Day >= LastRead ||
+                    ws.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v &&
+                    ExcelDateToJSDate(ws.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) + Day >= LastRead)
         })
         console.log('\r\n')
         console.log(orders.map(({ dir }) => dir).join('\r\n'))
