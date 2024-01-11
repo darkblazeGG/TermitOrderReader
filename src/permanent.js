@@ -79,6 +79,7 @@ async function permanent(controller) {
                 ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v &&
                 ExcelDateToJSDate(ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) + Day >= LastRead
         })
+        console.log('\r\n')
         console.log(orders.map(({ dir }) => dir).join('\r\n'))
         logger.info('Read orders filtered')
 
