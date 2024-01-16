@@ -4,7 +4,7 @@ const XLSX = require('xlsx')
 const log4js = require('log4js')
 const logger = log4js.getLogger('default')
 
-const { permanent: { root, LastRead } } = require('./config.json')
+let { permanent: { root, LastRead } } = require('./config.json')
 
 const Second = 1000
 const Minute = 60 * Second
@@ -96,6 +96,7 @@ async function permanent(controller) {
 
         let config = JSON.parse(fs.readFileSync(__dirname + '/config.json'))
         config.permanent.LastRead = newLR
+        LastRead = newLR
         fs.writeFileSync(__dirname + '/config.json', JSON.stringify(config))
 
         logger.info('New orders sent to service')
