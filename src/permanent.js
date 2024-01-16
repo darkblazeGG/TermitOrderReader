@@ -66,7 +66,7 @@ async function permanent(controller) {
         logger.info('Orders directory read')
 
         orders = orders.filter(({ updatedAt, dir }) => updatedAt >= LastRead && !dir.includes('~') && dir.includes('.xlsx'))
-        console.log(orders.map(({ dir }) => dir).join('\r\n'))
+        // console.log(orders.map(({ dir }) => dir).join('\r\n'))
         orders = orders.filter(({ dir }) => {
             if (!fs.existsSync(dir))
                 return
@@ -76,13 +76,13 @@ async function permanent(controller) {
                 return
 
             return (ws.Sheets['ЗАКАЗ-НАРЯД']?.['M8']?.v || ws.Sheets['ЗАКАЗ-НАРЯД']?.['N8']?.v) && !`${ws.Sheets['СЧЕТ']['O9']?.v}`?.toLowerCase()?.match(/барнаул/) && !`${ws.Sheets['ЗАКАЗ-НАРЯД']['M9']?.v}`?.toLowerCase()?.match(/барнаул/) &&
-                (ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v &&
-                    ExcelDateToJSDate(ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) + Day >= LastRead ||
-                    ws.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v &&
-                    ExcelDateToJSDate(ws.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) + Day >= LastRead)
+                (ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа')?.match(/\d+/)[0])]?.v &&
+                    ExcelDateToJSDate(ws.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа')?.match(/\d+/)[0])]?.v) + Day >= LastRead ||
+                    ws.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа')?.match(/\d+/)[0])]?.v &&
+                    ExcelDateToJSDate(ws.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(ws.Sheets['СЧЕТ']).find(key => ws.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа')?.match(/\d+/)[0])]?.v) + Day >= LastRead)
         })
-        console.log('\r\n')
-        console.log(orders.map(({ dir }) => dir).join('\r\n'))
+        // console.log('\r\n')
+        // console.log(orders.map(({ dir }) => dir).join('\r\n'))
         logger.info('Read orders filtered')
 
         orders = (await Promise.all(orders.map(({ dir }) => dir).map(newOrder)).catch(logger.error.bind(logger)))?.filter(order => typeof order != 'string')
