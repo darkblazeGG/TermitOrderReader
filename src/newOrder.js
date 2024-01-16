@@ -247,7 +247,7 @@ function newOrder(file) {
         if (!created)
             created = ws['M8']?.v ? ExcelDateToJSDate(ws['M8']?.v) : undefined
         let lastDate = workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
-        if(!lastDate)
+        if (!lastDate)
             lastDate = workbook.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
 
         let stages = [
@@ -676,10 +676,10 @@ function newOrder(file) {
             let term = stages[i].term
             if (!term)
                 days.push(`${last}`)
+            if (stages[i].stage === 'Полировка')
+                last += Day
             while (term) {
                 last += Day
-                if (stages[i].stage === 'Полировка')
-                    last += Day
                 if (!stages[i].weekend)
                     while ([0, 6].includes(new Date(last).getDay()))
                         last += Day
