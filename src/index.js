@@ -13,6 +13,7 @@ const controller = new Controller()
 
 controller.sign().then(() => {
     logger.info('Controller signed successfully')
+    controller.verify()
     controller.lounch().then(result => {
         logger.info(result)
         logger.info('Controller document loaded successfully')

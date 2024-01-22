@@ -91,8 +91,13 @@ async function permanent(controller) {
         orders = (await Promise.all(orders.map(({ dir }) => dir).map(newOrder)).catch(logger.error.bind(logger)))?.filter(order => typeof order != 'string')
         logger.info('Read orders transformated')
 
-        for (let order of orders)
-            await controller.send(order).then(logger.info.bind(logger)).catch(logger.error.bind(logger))
+        for (let order of orders) {
+            let result = await controller.send(order).catch(logger.error.bind(logger))
+            if (!result)
+                return setTimeout(permanent, 15 * Minute, controller)
+
+            logger.info(result)
+        }
 
         let config = JSON.parse(fs.readFileSync(__dirname + '/config.json'))
         config.permanent.LastRead = newLR

@@ -40,6 +40,27 @@ class Controller {
         })
     }
 
+    verify() {
+        request(`${root}/verifyCompany`, {
+            method: 'GET',
+            headers: {
+                jwt: this.#jwt
+            }
+        }, (error, response, body) => {
+            if (error || response.statusCode != 200) {
+                logger.error(error || response.statusCode)
+                return setTimeout(this.verify.bind(this), 5 * Minute)
+            }
+
+            logger.info(body)
+
+            if (body != 'verified')
+                return this.sign().catch(logger.error.bind(logger)).then(() => setTimeout(this.verify.bind(this), 5 * Minute))
+
+            setTimeout(this.verify.bind(this), 5 * Minute)
+        })
+    }
+
     send(order) {
         return new Promise((resolve, reject) => {
             request(`${root}/setOrder`, {
