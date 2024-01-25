@@ -363,223 +363,6 @@ function newOrder(file) {
 
         stages = stages.filter(stage => publishers.find(({ stages }) => stages.find(item => item.stage === stage.stage)))
         stages = stages.map(stage => {
-            // let price = 0
-            // if (stage.stage === 'Шлифовка к изолятору') {
-            //     if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5) {
-            //         if (publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length)
-            //             price += prices['фрезированные']['Шлифовка к изолятору'] * 0.5
-            //         else
-            //             price += prices['фрезированные']['Шлифовка к изолятору'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     } else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1) {
-            //         if (publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length)
-            //             price += prices['фрезированные']['Шлифовка к изолятору']
-            //         else
-            //             price += prices['фрезированные']['Шлифовка к изолятору'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     } else
-            //         price += prices['фрезированные']['Шлифовка к изолятору'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-
-            // } else if (stage.stage === 'Нанесение изолятора') {
-            //     if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5) {
-            //         if (publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length)
-            //             price += prices['фрезированные']['Нанесение изолятора'] * 0.5
-            //         else
-            //             price += prices['фрезированные']['Нанесение изолятора'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     } else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1) {
-            //         if (publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length)
-            //             price += prices['фрезированные']['Нанесение изолятора']
-            //         else
-            //             price += prices['фрезированные']['Нанесение изолятора'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     } else
-            //         price += prices['фрезированные']['Нанесение изолятора'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            // } else if (stage.stage === 'Шлифовка к грунту') {
-            //     if (publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5)
-            //             price += prices['фрезированные']['Шлифовка к грунту'] * 0.5 + prices['обратки']['Шлифовка к грунту'] * 0.5
-            //         else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1)
-            //             price += prices['фрезированные']['Шлифовка к грунту'] + prices['обратки']['Шлифовка к грунту']
-            //         else {
-            //             price += prices['обратки']['Шлифовка к грунту'] * publishers.filter(({ stages, sides, colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/глянец2/) && sides === 2 && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['прямые']['Шлифовка к грунту'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['фрезированные']['Шлифовка к грунту'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else if (publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5)
-            //             price += prices['прямые']['Шлифовка к грунту'] * 0.5 + prices['обратки']['Шлифовка к грунту'] * 0.5
-            //         else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1)
-            //             price += prices['прямые']['Шлифовка к грунту'] + prices['обратки']['Шлифовка к грунту']
-            //         else {
-            //             price += prices['обратки']['Шлифовка к грунту'] * publishers.filter(({ stages, sides, colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/глянец2/) && sides === 2 && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['прямые']['Шлифовка к грунту'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['фрезированные']['Шлифовка к грунту'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else {
-            //         price += prices['обратки']['Шлифовка к грунту'] * publishers.filter(({ stages, sides, colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/глянец2/) && sides === 2 && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['прямые']['Шлифовка к грунту'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['фрезированные']['Шлифовка к грунту'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     }
-            // } else if (stage.stage === 'Нанесение грунта') {
-            //     if (publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length && (publishers.filter(({ thickness }) => thickness === 22).length === publishers.length || publishers.filter(({ thickness }) => thickness != 22).length === publishers.length)) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5)
-            //             price += prices['фрезированные']['Нанесение грунта'] * 0.5 + prices['обратки']['Нанесение грунта'] * 0.5
-            //         else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1)
-            //             price += prices['фрезированные']['Нанесение грунта'] + prices['обратки']['Нанесение грунта']
-            //         else {
-            //             price += prices['обратки']['Нанесение грунта'] * publishers.filter(({ stages, sides, colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/глянец2/) && sides && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['прямые']['Нанесение изолятора'] * publishers.filter(({ stages, thickness }) => (!stages.find(item => item.stage === 'Нанесение изолятора') && thickness === 22 || stages.find(item => item.stage === 'Полировка'))).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['прямые']['Нанесение грунта'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['фрезированные']['Нанесение грунта'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else if (publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length && (publishers.filter(({ thickness }) => thickness === 22).length === publishers.length || publishers.filter(({ thickness }) => thickness != 22).length === publishers.length)) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5) {
-            //             price += prices['прямые']['Нанесение грунта'] * 0.5 + prices['обратки']['Нанесение грунта'] * 0.5
-            //             if (publishers.filter(({ thickness }) => thickness === 22).length === publishers.length)
-            //                 price += prices['прямые']['Нанесение изолятора'] * 0.5
-            //         } else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1) {
-            //             price += prices['прямые']['Нанесение грунта'] + prices['обратки']['Нанесение грунта']
-            //             if (publishers.filter(({ thickness }) => thickness === 22).length === publishers.length)
-            //                 price += prices['прямые']['Нанесение изолятора']
-            //         } else {
-            //             price += prices['обратки']['Нанесение грунта'] * publishers.filter(({ stages, sides, colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/глянец2/) && sides && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['прямые']['Нанесение изолятора'] * publishers.filter(({ stages, thickness }) => (!stages.find(item => item.stage === 'Нанесение изолятора') && thickness === 22 || stages.find(item => item.stage === 'Полировка'))).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['прямые']['Нанесение грунта'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['фрезированные']['Нанесение грунта'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else {
-            //         price += prices['обратки']['Нанесение грунта'] * publishers.filter(({ stages, sides, colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/глянец2/) && sides && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['прямые']['Нанесение изолятора'] * publishers.filter(({ stages, thickness }) => (!stages.find(item => item.stage === 'Нанесение изолятора') && thickness === 22 || stages.find(item => item.stage === 'Полировка'))).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['прямые']['Нанесение грунта'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['фрезированные']['Нанесение грунта'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     }
-            // } else if (stage.stage === 'Шлифовка к покраске') {
-            //     if (publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5)
-            //             price += prices['фрезированные']['Шлифовка к покраске'] * 0.5 + prices['обратки']['Шлифовка к покраске'] * 0.5
-            //         else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1)
-            //             price += prices['фрезированные']['Шлифовка к покраске'] + prices['обратки']['Шлифовка к покраске']
-            //         else {
-            //             price += prices['обратки']['Шлифовка к покраске'] * publishers.filter(({ sides }) => sides === 2).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['прямые']['Шлифовка к покраске'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['фрезированные']['Шлифовка к покраске'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else if (publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).length === publishers.length) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5)
-            //             price += prices['прямые']['Шлифовка к покраске'] * 0.5 + prices['обратки']['Шлифовка к покраске'] * 0.5
-            //         else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1)
-            //             price += prices['прямые']['Шлифовка к покраске'] + prices['обратки']['Шлифовка к покраске']
-            //         else {
-            //             price += prices['обратки']['Шлифовка к покраске'] * publishers.filter(({ sides }) => sides === 2).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['прямые']['Шлифовка к покраске'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['фрезированные']['Шлифовка к покраске'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else {
-            //         price += prices['обратки']['Шлифовка к покраске'] * publishers.filter(({ sides }) => sides === 2).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['прямые']['Шлифовка к покраске'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['фрезированные']['Шлифовка к покраске'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     }
-            // } else if (stage.stage === 'Аппликация') {
-            //     price += prices['Упаковка']['Аппликация'] * publishers.filter(({ stages }) => stages.filter(({ stage }) => stage === 'Аппликация').map(({ index }) => index).includes(stage.index)).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            // } else if (stage.stage === 'Покраска') {
-            //     if ((publishers.filter(({ sides }) => sides === 2).length === publishers.length || publishers.filter(({ sides }) => sides === 1).length === publishers.length) && (publishers.filter(({ colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак/)).length === 0 || publishers.filter(({ colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак/)).length === publishers.length || publishers.filter(({ colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак2/)).length === publishers.length)) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5) {
-            //             price += prices['обратки']['Покраска'] * 0.5
-            //             price += prices['прямые']['Покраска'] * 0.5
-            //             price += prices['фрезированные']['Покраска'] * 0.5
-            //             price += prices['лак']['односторонний'] * 0.5
-            //             price += prices['лак']['двусторонний'] * 0.5
-            //         } else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1) {
-            //             price += prices['обратки']['Покраска']
-            //             price += prices['прямые']['Покраска']
-            //             price += prices['фрезированные']['Покраска']
-            //             price += prices['лак']['односторонний']
-            //             price += prices['лак']['двусторонний']
-            //         } else {
-            //             price += prices['обратки']['Покраска'] * publishers.filter(({ sides }) => sides === 2).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['прямые']['Покраска'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['фрезированные']['Покраска'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['лак']['односторонний'] * publishers.filter(({ colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак/)).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['лак']['двусторонний'] * publishers.filter(({ colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак2/)).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else {
-            //         price += prices['обратки']['Покраска'] * publishers.filter(({ sides }) => sides === 2).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['прямые']['Покраска'] * publishers.filter(({ stages }) => !stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['фрезированные']['Покраска'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Нанесение изолятора')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['лак']['односторонний'] * publishers.filter(({ colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак/)).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['лак']['двусторонний'] * publishers.filter(({ colourType }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак2/)).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     }
-            // } else if (stage.stage === 'Полировка') {
-            //     if (publishers.filter(({ stages, sides }) => sides === 1 && stages.find(item => item.stage === 'Полировка')).length === publishers.filter(({ stages }) => stages.find(item => item.stage === 'Полировка')).length) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5)
-            //             price += prices['глянец']['односторонний'] * 0.5
-            //         else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1)
-            //             price += prices['глянец']['односторонний']
-            //         else {
-            //             price += prices['глянец']['односторонний'] * publishers.filter(({ stages, sides }) => sides === 1 && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['глянец']['двусторонний'] * publishers.filter(({ stages, sides }) => sides === 2 && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else if (publishers.filter(({ stages, sides }) => sides === 2 && stages.find(item => item.stage === 'Полировка')).length === publishers.filter(({ stages }) => stages.find(item => item.stage === 'Полировка')).length) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5)
-            //             price += prices['глянец']['двусторонний'] * 0.5
-            //         else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1)
-            //             price += prices['глянец']['двусторонний']
-            //         else {
-            //             price += prices['глянец']['односторонний'] * publishers.filter(({ stages, sides }) => sides === 1 && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['глянец']['двусторонний'] * publishers.filter(({ stages, sides }) => sides === 2 && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else {
-            //         price += prices['глянец']['односторонний'] * publishers.filter(({ stages, sides }) => sides === 1 && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['глянец']['двусторонний'] * publishers.filter(({ stages, sides }) => sides === 2 && stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     }
-            // } else if (stage.stage === 'Упаковка') {
-            //     if (publishers.filter(({ stages, sides }) => sides === 1 && !stages.find(item => item.stage === 'Полировка')).length === publishers.length) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5)
-            //             price += prices['Упаковка']['Упаковка'] * 0.5 + prices['Упаковка']['чистка'] * 0.5
-            //         else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1)
-            //             price += prices['Упаковка']['Упаковка'] + prices['Упаковка']['чистка']
-            //         else {
-            //             price += prices['Упаковка']['Упаковка'] * publishers.map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //             price += prices['Упаковка']['чистка'] * publishers.filter(({ stages, sides }) => sides === 1 && !stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         }
-            //     } else if (publishers.filter(({ stages, sides }) => sides === 2 || stages.find(item => item.stage === 'Полировка')).length === publishers.length) {
-            //         if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) <= 0.5)
-            //             price += prices['Упаковка']['Упаковка'] * 0.5
-            //         else if (publishers.map(({ square }) => square).reduce((a, b) => a + b, 0) < 1)
-            //             price += prices['Упаковка']['Упаковка']
-            //         else
-            //             price += prices['Упаковка']['Упаковка'] * publishers.map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     } else {
-            //         price += prices['Упаковка']['чистка'] * publishers.filter(({ stages, sides }) => sides === 1 && !stages.find(item => item.stage === 'Полировка')).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         // price += prices['Упаковка']['Аппликация'] * publishers.filter(({ sides }) => sides === 2).map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //         price += prices['Упаковка']['Упаковка'] * publishers.map(({ square }) => square).reduce((a, b) => a + b, 0)
-            //     }
-            // }
-
-            // if (publishers.find(({ stages }) => stages.find(item => item.stage === 'Шлифовка к изолятору' && item.H))) {
-            //     if (stage.stage === 'Шлифовка к изолятору') {
-            //         price += prices['ручки']['Шлифовка к изолятору'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к изолятору' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //         price += prices['ручки']['Нанесение изолятора'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к изолятору' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //     } else if (stage.stage === 'Шлифовка к грунту') {
-            //         price += prices['ручки']['Шлифовка к грунту'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к изолятору' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //     } else if (stage.stage === 'Нанесение грунта') {
-            //         price += prices['ручки']['Нанесение грунта'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к изолятору' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //     } else if (stage.stage === 'Шлифовка к покраске') {
-            //         price += prices['ручки']['Шлифовка к покраске'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к изолятору' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //     } else if (stage.stage === 'Покраска') {
-            //         price += prices['ручки']['Покраска'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к изолятору' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //     }
-            // } else if (publishers.find(({ stages }) => stages.find(item => item.stage === 'Шлифовка к грунту' && item.H))) {
-            //     if (stage.stage === 'Шлифовка к грунту') {
-            //         price += prices['ручки']['Шлифовка к изолятору'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к грунту' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //         price += prices['ручки']['Нанесение изолятора'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к грунту' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //         price += prices['ручки']['Шлифовка к грунту'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к грунту' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //     } else if (stage.stage === 'Нанесение грунта') {
-            //         price += prices['ручки']['Нанесение грунта'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к грунту' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //     } else if (stage.stage === 'Шлифовка к покраске') {
-            //         price += prices['ручки']['Шлифовка к покраске'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к грунту' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //     } else if (stage.stage === 'Покраска') {
-            //         price += prices['ручки']['Покраска'] * publishers.filter(({ stages }) => stages.find(item => item.stage === 'Шлифовка к грунту' && item.H)).map(({ amount }) => amount).reduce((a, b) => a + b, 0)
-            //     }
-            // }
-
             let price = publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0)
 
             let addition = []
@@ -599,7 +382,14 @@ function newOrder(file) {
                     else
                         factvalue += publisher.square * (typeof publisher.colourType === 'string' && publisher.colourType?.toLowerCase().match(/лак/) ? 2 : 1)
                 else if (stage.stage.match('Шлифовка'))
-                    factvalue += publisher.square * (publisher.stages.find(({ stage }) => stage === 'Шлифовка к изолятору') ? 20 / 7 : 1)
+                    if (stage.stage === 'Шлифовка к грунту')
+                        if (publisher.stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2)) {
+                            if (stage.index === 2)
+                                factvalue += publisher.square * 20 / 7
+                        } else
+                            factvalue += publisher.square * (publisher.stages.find(({ stage }) => stage === 'Шлифовка к изолятору') ? 20 / 7 : 1)
+                    else
+                        factvalue += publisher.square * (publisher.stages.find(({ stage }) => stage === 'Шлифовка к изолятору') ? 20 / 7 : 1)
                 else
                     factvalue += publisher.square
             factvalue = round(factvalue, 2)
@@ -616,11 +406,18 @@ function newOrder(file) {
                 H: stage.H && publishers.find(publisher => publisher.stages.find(item => item.stage === stage.stage && item.H && item.index === stage.index)) ? true : false
             }
         })
-        // if (stages.find(stage => stage.H && stage.stage === 'Шлифовка к изолятору') && stages.find(stage => stage.H && stage.stage === 'Шлифовка к грунту')) {
-        //     stages.find(stage => stage.H && stage.stage === 'Шлифовка к изолятору').A = true
-        //     stages.find(stage => stage.H && stage.stage === 'Шлифовка к грунту').term -= 1
-        //     stages.find(stage => stage.H && stage.stage === 'Шлифовка к грунту').H = false
-        // }
+        if (stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2)) {
+            let value = stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).factvalue
+            if (value === 0) {
+                let stage = stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index)
+                stages.splice(stages.findIndex(({ stage, index }) => stage === 'Шлифовка к грунту' && !index), 1)
+                stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2).term = stage.term
+                stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2).index = stage.index
+            } else {
+                stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).value = value
+                stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).addition = stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).addition.replace(/Ф: \d+\.?\d{0,}/, '')
+            }
+        }
 
         if (publishers.find(({ T }) => T)) {
             stages.splice(stages.findIndex(stage => stage.stage === 'Столярка'), 0,
