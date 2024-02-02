@@ -72,7 +72,7 @@ function getPublisherSalary(publisher) {
                             price += prices['прямые']['Нанесение изолятора'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                     }
                 }
-                if (publisher.sides === 2 && publisher.colourType === 'глянец2' && !publisher.T)
+                if (publisher.sides === 2 && publisher.colourType === 'глянец2' && !publisher.T && !publisher.description.toLowerCase().includes('в сборе'))
                     price += prices['обратки'][stage.stage] * publisher.square * (publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
             }
         } else if (stage.stage === 'Шлифовка к покраске') {
@@ -101,13 +101,13 @@ function getPublisherSalary(publisher) {
                             price += prices['прямые']['Нанесение изолятора'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                     }
                 }
-                if (publisher.sides === 2 && publisher.colourType === 'глянец2' && !publisher.T)
+                if (publisher.sides === 2 && !publisher.T && !publisher.description.toLowerCase().includes('в сборе'))
                     price += prices['обратки'][stage.stage] * publisher.square * (publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
             }
         } else if (stage.stage === 'Покраска') {
-            if (publisher.description.toLowerCase().match(/профиль/))
+            if (publisher.description.toLowerCase().match(/профиль|метал/))
                 price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Алюминиевый профиль']
-            else if (publisher.description.toLowerCase().match(/карниз/) && publisher.description.toLowerCase().match(/пластик/))
+            else if (publisher.description.toLowerCase().match(/карниз|цоколь/) && publisher.description.toLowerCase().match(/пластик/))
                 price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Пластиковый карниз']
             else if (publisher.description.toLowerCase().match(/карниз/))
                 price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Покраска']
