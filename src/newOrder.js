@@ -2,6 +2,8 @@ const XLSX = require('xlsx')
 
 const Сarpentry = [/р/, /п/, /с/, /б/]
 const Type = [/прямой/, /фрез/, /f/, /фас кл/, /фасад клиента/, /тумба/, /в сборе/]
+const eFs = ['f-01', 'f-02', 'f-03', 'f-04', 'f-06', 'f-07', 'f-08', 'f-09', 'f-10', 'f-11', 'f-15', 'f-16', 'f-18', 'f-19', 'F20', 'f-21']
+const sFs = ['f-05', 'f-12', 'f-13', 'f-14', 'f-17']
 
 const Second = 1000
 const Minute = 60 * Second
@@ -174,7 +176,7 @@ function newOrder(file) {
 
             if (H) {
                 if (row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(/шпон/)) {
-                } else if (row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[2]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[1]))
+                } else if ((row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[2]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[1])) && !row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[0]))
                     stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к изолятору') + 1, 0, {
                         term: 1,
                         stage: 'Шлифовка к изолятору',
@@ -218,15 +220,15 @@ function newOrder(file) {
                 if (row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'все')
                     row[rows[0].findIndex(row => row === 'Кол-во сторон')] = 2
                 let paintstages = row[rows[0].findIndex(row => row === 'Кол-во сторон')] - 1 + ((row[rows[0].findIndex(row => row === 'Цвет')].toString() || undefined)?.toLowerCase().split(',').length || 1) - 1
-                for (let i = 0; i < paintstages; i++)
-                    stages.splice(stages.findIndex(stage => stage.stage === 'Покраска') + 1, 0, {
-                        term: 1,
-                        stage: 'Аппликация',
-                        index: paintstages - i - 1
-                    }, {
+                for (let i = 0; i < Math.ceil(paintstages); i++)
+                    stages.splice(stages.findIndex(stage => stage.stage === 'Покраска'), 0, {
                         term: 1,
                         stage: 'Покраска',
-                        index: paintstages - i
+                        index: Math.ceil(paintstages) - i
+                    }, {
+                        term: 1,
+                        stage: 'Аппликация',
+                        index: Math.ceil(paintstages) - i - 1
                     })
                 if (squere > 10 && stages.filter(({ stage }) => stage === 'Покраска').length === 1)
                     stages[stages.findIndex(stage => stage.stage === 'Покраска')].term++
@@ -234,15 +236,15 @@ function newOrder(file) {
                 let squere = rows.filter(row => row[rows[0].findIndex(row => row === 'Тип краски')]?.toString().toLowerCase().includes('мат'))
                     .map(row => row[rows[0].findIndex(row => row === 'Площадь')]).reduce((a, b) => a + b, 0)
                 let paintstages = row[rows[0].findIndex(row => row === 'Кол-во сторон')] - T - 1 + ((row[rows[0].findIndex(row => row === 'Цвет')].toString() || undefined)?.toLowerCase().split(',').length || 1) - 1
-                for (let i = 0; i < paintstages; i++)
+                for (let i = 0; i < Math.ceil(paintstages); i++)
                     stages.splice(stages.findIndex(stage => stage.stage === 'Покраска'), 0, {
                         term: 1,
                         stage: 'Покраска',
-                        index: paintstages - i
+                        index: Math.ceil(paintstages) - i
                     }, {
                         term: 1,
                         stage: 'Аппликация',
-                        index: paintstages - i - 1
+                        index: Math.ceil(paintstages) - i - 1
                     })
                 if (squere > 10 && stages.filter(({ stage }) => stage === 'Покраска').length === 1)
                     stages[stages.findIndex(stage => stage.stage === 'Покраска')].term++
@@ -261,7 +263,7 @@ function newOrder(file) {
                 H,
                 colour: row[rows[0].findIndex(row => row === 'Цвет')],
                 colourType: row[rows[0].findIndex(row => row === 'Тип краски')],
-                sides: typeof row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'number' ? round(row[rows[0].findIndex(row => row === 'Кол-во сторон')], 0) : 2,
+                sides: typeof row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'number' ? row[rows[0].findIndex(row => row === 'Кол-во сторон')] : 2,
                 radius: row[rows[0].findIndex(row => row === 'Радиус')] === 'мин' ? 1 : typeof row[rows[0].findIndex(row => row === 'МДФ')] === 'number' ? row[rows[0].findIndex(row => row === 'МДФ')] : 0,
                 stages
             }
@@ -269,6 +271,7 @@ function newOrder(file) {
             getPublisherSalary(publisher)
             return publisher
         })
+        // console.log(publishers.map(({ stages, square }) => stages.filter(({ stage }) => stage.includes('Шлифовка')).map(({ stage, price }) => `${stage} (${square}) = ${price}`).join(', ')).join('\r\n'))
         if (publishers.includes(undefined))
             return
         if (publishers.find(({ stages }) => stages.find(({ P }) => P)) && publishers.find(({ stages }) => stages.find(({ G }) => G)))
@@ -394,7 +397,86 @@ function newOrder(file) {
 
         stages = stages.filter(stage => publishers.find(({ stages }) => stages.find(item => item.stage === stage.stage)))
         stages = stages.map(stage => {
+            let value = round(publishers.filter(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)
             let price = publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0)
+            if (price != 0 && publishers.filter(({ H }) => H).length === publishers.length || publishers.filter(({ H }) => !H).length === publishers.length)
+                if (value <= 0.5) {
+                    if (stage.stage.includes('Шлифовка') || stage.stage === 'Нанесение грунта')
+                        if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length) {
+                            if (publishers.filter(({ description }) => sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                                price = 0.5 * prices['фрезированные'][stage.stage]['сложная']
+                            else if (publishers.filter(({ description }) => !sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                                price = 0.5 * prices['фрезированные'][stage.stage]['простая']
+                        } else if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && description?.toLowerCase().match(Type[0])).length === publishers.length)
+                            price = 0.5 * (prices['прямые'][stage.stage] + 50)
+                        else if (publishers.filter(({ description }) => !(description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && description?.toLowerCase().match(Type[0])).length === publishers.length)
+                            price = 0.5 * prices['прямые'][stage.stage]
+
+                    if (stage.stage === 'Нанесение изолятора')
+                        if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length)
+                            if (publishers.filter(({ description }) => sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                                price = 0.5 * prices['фрезированные'][stage.stage]
+                            else if (publishers.filter(({ description }) => !sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                                price = 0.5 * prices['фрезированные'][stage.stage]
+
+                    if (stage.stage === 'Покраска')
+                        if (publishers.filter(({ sides }) => sides === 2).length === publishers.length || publishers.filter(({ sides }) => sides === 1.5).length === publishers.length || publishers.filter(({ sides }) => sides === 1).length === publishers.length)
+                            if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('лак2')).length === publishers.length)
+                                if (!stage.index)
+                                    price = 0.5 * (prices['прямые'][stage.stage] + prices['лак']['односторонний'])
+                                else
+                                    price = 0.5 * (prices['обратки'][stage.stage] + prices['лак']['двусторонний'])
+                            else if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('лак') && !colourType.toLowerCase().includes('лак2')).length === publishers.length)
+                                if (!stage.index)
+                                    price = 0.5 * (prices['прямые'][stage.stage] + prices['лак']['односторонний'])
+                                else
+                                    price = 0.5 * prices['обратки'][stage.stage]
+                            else if (publishers.filter(({ colourType }) => !colourType.toLowerCase().includes('лак')).length === publishers.length)
+                                if (!stage.index)
+                                    price = 0.5 * prices['прямые'][stage.stage]
+                                else
+                                    price = 0.5 * prices['обратки'][stage.stage]
+                    if (stage.stage === 'Шлифовка к грунту' && stage.H || stage.stage != 'Шлифовка к грунту' && price != publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0))
+                        price += publishers.filter(({ H }) => H).map(({ amount }) => amount).reduce((a, b) => a + b, 0) * (prices['ручки'][stage.stage] || 0)
+                } else if (value <= 1) {
+                    if (stage.stage.includes('Шлифовка') || stage.stage === 'Нанесение грунта')
+                        if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length) {
+                            if (publishers.filter(({ description }) => sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                                price = prices['фрезированные'][stage.stage]['сложная']
+                            else if (publishers.filter(({ description }) => !sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                                price = prices['фрезированные'][stage.stage]['простая']
+                        } else if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && description?.toLowerCase().match(Type[0])).length === publishers.length)
+                            price = (prices['прямые'][stage.stage] + 50)
+                        else if (publishers.filter(({ description }) => !(description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && description?.toLowerCase().match(Type[0])).length === publishers.length)
+                            price = prices['прямые'][stage.stage]
+
+                    if (stage.stage === 'Нанесение изолятора')
+                        if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length)
+                            if (publishers.filter(({ description }) => sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                                price = prices['фрезированные'][stage.stage]
+                            else if (publishers.filter(({ description }) => !sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                                price = prices['фрезированные'][stage.stage]
+
+                    if (stage.stage === 'Покраска')
+                        if (publishers.filter(({ sides }) => sides === 2).length === publishers.length || publishers.filter(({ sides }) => sides === 1.5).length === publishers.length || publishers.filter(({ sides }) => sides === 1).length === publishers.length)
+                            if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('лак2')).length === publishers.length)
+                                if (!stage.index)
+                                    price = (prices['прямые'][stage.stage] + prices['лак']['односторонний'])
+                                else
+                                    price = (prices['обратки'][stage.stage] + prices['лак']['двусторонний'])
+                            else if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('лак') && !colourType.toLowerCase().includes('лак2')).length === publishers.length)
+                                if (!stage.index)
+                                    price = (prices['прямые'][stage.stage] + prices['лак']['односторонний'])
+                                else
+                                    price = prices['обратки'][stage.stage]
+                            else if (publishers.filter(({ colourType }) => !colourType.toLowerCase().includes('лак')).length === publishers.length)
+                                if (!stage.index)
+                                    price = prices['прямые'][stage.stage]
+                                else
+                                    price = prices['обратки'][stage.stage]
+                    if (stage.stage === 'Шлифовка к грунту' && stage.H || stage.stage != 'Шлифовка к грунту' && price != publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0))
+                        price += publishers.filter(({ H }) => H).map(({ amount }) => amount).reduce((a, b) => a + b, 0) * (prices['ручки'][stage.stage] || 0)
+                }
 
             let addition = []
             if (publishers.find(({ stages }) => stages.find(({ stage }) => stage === 'Шлифовка к изолятору')) && stage.stage.match(/Шлифовка|Распил/))
@@ -428,7 +510,7 @@ function newOrder(file) {
             return {
                 stage: stage.stage,
                 term: Math.max(...publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage)?.term || 0)),
-                value: round(publishers.filter(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
+                value,
                 factvalue,
                 index: stage.index,
                 price: round(price, 0),
