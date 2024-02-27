@@ -48,7 +48,7 @@ function getPublisherSalary(publisher) {
                         if (publisher.thickness === 22 && stage.stage === 'Нанесение грунта')
                             price -= prices['прямые']['Нанесение изолятора'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                     }
-                    if (publisher.sides > 1 && publisher.colourType === 'глянец' && !publisher.T)
+                    if (publisher.sides > 1 && publisher.colourType?.match(/глянец/) && !publisher.T)
                         price -= prices['обратки'][stage.stage] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1) * (publisher.sides - 1)
                 }
 
@@ -72,7 +72,7 @@ function getPublisherSalary(publisher) {
                             price += prices['прямые']['Нанесение изолятора'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                     }
                 }
-                if (publisher.sides > 1 && publisher.colourType === 'глянец2' && !publisher.T && !publisher.description.toLowerCase().includes('в сборе'))
+                if (publisher.sides > 1 && publisher.colourType?.match(/глянец2/) && !publisher.T && !publisher.description.toLowerCase().includes('в сборе'))
                     price += prices['обратки'][stage.stage] * publisher.square * (publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1) * (publisher.sides - 1)
             }
         } else if (stage.stage === 'Шлифовка к покраске') {
@@ -118,20 +118,20 @@ function getPublisherSalary(publisher) {
                     price += prices['прямые'][stage.stage] * publisher.square * (/* !publisher.T && */ publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                 if (stage.index)
                     price += prices['обратки'][stage.stage] * publisher.square * (/* !publisher.T &&  */publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1) * (publisher.sides - 1)
-                if (publisher.colourType.match(/лак/) && !stage.index)
+                if (publisher.colourType?.match(/лак/) && !stage.index)
                     price += prices['лак']['односторонний'] * publisher.square * (/* !publisher.T &&  */publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
-                if (publisher.colourType.match(/лак2/) && stage.index === 1)
+                if (publisher.colourType?.match(/лак2/) && stage.index === 1)
                     price += prices['лак']['двусторонний'] * publisher.square * (/* !publisher.T && */ publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
             }
         } else if (stage.stage === 'Аппликация' && (publisher.sides === 2 || publisher.T || publisher.description.toLowerCase().includes('в сборе') || publisher.description.toLowerCase().match(/лдсп/))) {
             price += prices['упаковка']['Аппликация'] * publisher.square
         } else if (stage.stage === 'Полировка') {
-            if (publisher.colourType.match(/глянец2/))
+            if (publisher.colourType?.match(/глянец2/))
                 price += prices['глянец']['двусторонний'] * publisher.square
-            else if (publisher.colourType.match(/глянец/))
+            else if (publisher.colourType?.match(/глянец/))
                 price += prices['глянец']['односторонний'] * publisher.square
         } else if (stage.stage === 'Упаковка') {
-            if ((publisher.sides === 1 || publisher.sides === 1.5) && !publisher.colourType.match(/глянец/))
+            if ((publisher.sides === 1 || publisher.sides === 1.5) && !publisher.colourType?.match(/глянец/))
                 price += prices['упаковка']['чистка'] * publisher.square
             price += prices['упаковка'][stage.stage] * publisher.square
         }
