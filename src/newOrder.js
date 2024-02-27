@@ -693,7 +693,7 @@ function newOrder(file) {
         }
 
         let order = {
-            number: JSON.parse(ws['N7']?.v?.match(/\d+/)[0] || ws['M7']?.v?.match(/\d+/)[0]),
+            number: JSON.parse(ws['N7']?.v ? ws['N7']?.v?.match(/\d+/)[0] : ws['M7']?.v?.match(/\d+/)[0]),
             created: /* +new Date(+new Date(2024, 0, 1) + 4 * Hour),// */created,
             lastDate: /* +new Date(+new Date(2024, 0, 31) + 4 * Hour),// */lastDate,
             stages,
