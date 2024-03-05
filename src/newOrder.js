@@ -685,7 +685,6 @@ function newOrder(file) {
             stages[i].days = days.join(',')
             if (stages[i].stage === 'Распил') {
                 stages[i].days = stages[i].days.split(',').slice(-1).join(',')
-                stages[i].shiftable = false
                 stages[i].term = 1
             }
 
