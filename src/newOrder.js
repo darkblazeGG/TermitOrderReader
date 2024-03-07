@@ -637,7 +637,7 @@ function newOrder(file) {
 
                 continue
             }
-            if (stages[i].stage === 'Покраска' && stages[i - 1].stage === 'Аппликация')
+            if (stages[i].stage === 'Покраска' && i - 1 >= 0 && stages[i - 1].stage === 'Аппликация')
                 stages[i].delay = 0
             if (stages[i].stage === 'Отгрузка') {
                 stages[i].days = `${lastDate}`
