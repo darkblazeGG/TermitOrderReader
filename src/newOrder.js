@@ -615,7 +615,7 @@ function newOrder(file) {
                     days: `${add}`,
                     term: 1,
                     weekend: false,
-                    stage: 'Столярка',
+                    stage: 'Фрезеровка ручек',
                     value: stages[i].value,
                     factvalue: stages[i].factvalue,
                     addition: ''
