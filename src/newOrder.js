@@ -696,6 +696,7 @@ function newOrder(file) {
             created: /* +new Date(+new Date(2024, 0, 1) + 4 * Hour),// */created,
             lastDate: /* +new Date(+new Date(2024, 0, 31) + 4 * Hour),// */lastDate,
             stages,
+            snapshot: typeof XLSX.utils.sheet_to_html(ws) === 'string' && XLSX.utils.sheet_to_html(ws).match(/<table>.+<\/table>/) ? XLSX.utils.sheet_to_html(ws).match(/<table>.+<\/table>/)[0] : null,
             costumer: workbook.Sheets['СЧЕТ']['P6']?.v || workbook.Sheets['СЧЕТ']['O6']?.v,
         }
 
