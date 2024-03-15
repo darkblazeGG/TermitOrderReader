@@ -110,10 +110,7 @@ function newOrder(file) {
                     stage: 'Отгрузка'
                 }
             ]
-
-            if (row[rows[0].findIndex(row => row === 'МДФ')] === '-' || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[3]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[4]))
-                stages.splice(stages.findIndex(stage => stage.stage === 'Распил'), 1)
-            else if ((row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[2]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[1])) && !row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[0])) {
+            if ((row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[2]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[1])) && !row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[0])) {
                 let square = rows.filter(row => row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[2]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[1]))
                     .map(row => row[rows[0].findIndex(row => row === 'Площадь')]).reduce((a, b) => a + b, 0)
                 stages[stages.findIndex(stage => stage.stage === 'Распил')].term += 2
@@ -205,6 +202,9 @@ function newOrder(file) {
                     P,
                     G
                 })
+
+            if (row[rows[0].findIndex(row => row === 'МДФ')] === '-' || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[3]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[4]))
+                stages.splice(stages.findIndex(stage => stage.stage === 'Распил'), 1)
 
             if (row[rows[0].findIndex(row => row === 'Цвет')] === '-')
                 stages.splice(stages.findIndex(stage => stage.stage === 'Покраска'), 1)
