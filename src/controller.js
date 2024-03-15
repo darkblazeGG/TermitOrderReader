@@ -85,7 +85,7 @@ class Controller {
 
     send(order) {
         return new Promise((resolve, reject) => {
-            console.log(this.#jwt)
+            // console.log(this.#jwt)
             request(`${root}/setOrder`, {
                 method: 'POST',
                 headers: {
