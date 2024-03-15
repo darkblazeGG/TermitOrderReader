@@ -16,6 +16,7 @@ const Day = 24 * Hour
 
 class Controller {
     #jwt
+    #jwtP
 
     constructor() { }
 
@@ -35,6 +36,27 @@ class Controller {
                     return reject(error || response.statusCode)
 
                 this.#jwt = JSON.parse(body).jwt
+                return resolve('success')
+            })
+        })
+    }
+
+    signP() {
+        return new Promise((resolve, reject) => {
+            request(`${root}/sign`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    login: 'PaymentPointer',
+                    password: 'paymentPointer1029384756'
+                }),
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }, (error, response, body) => {
+                if (error || response.statusCode != 200)
+                    return reject(error || response.statusCode)
+
+                this.#jwtP = JSON.parse(body).jwt
                 return resolve('success')
             })
         })
@@ -63,6 +85,7 @@ class Controller {
 
     send(order) {
         return new Promise((resolve, reject) => {
+            console.log(this.#jwt)
             request(`${root}/setOrder`, {
                 method: 'POST',
                 headers: {
