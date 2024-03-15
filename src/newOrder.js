@@ -165,6 +165,11 @@ function newOrder(file) {
                     stage: 'Аппликация'
                 })
             }
+            if (row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[5]))
+                stages.splice(stages.findIndex(stage => stage.stage === 'Покраска'), 0, {
+                    term: 1,
+                    stage: 'Аппликация'
+                })
 
             let P = row[rows[0].findIndex(row => row === 'Категория')]?.toString().toLowerCase().match(Сarpentry[1]) ? 1 : 0
             let H = row[rows[0].findIndex(row => row === 'Категория')]?.toString().toLowerCase().match(Сarpentry[0]) ? 1 : 0
