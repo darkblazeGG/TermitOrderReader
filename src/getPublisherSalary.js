@@ -72,7 +72,7 @@ function getPublisherSalary(publisher) {
                             price += prices['прямые']['Нанесение изолятора'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                     }
                 }
-                if (publisher.sides > 1 && publisher.colourType && publisher.colourType?.match(/глянец2/) && !publisher.T && !publisher.description.toLowerCase().includes('в сборе'))
+                if (publisher.sides > 1 && publisher.colourType && (publisher.colourType?.match(/глянец2/) || stage.stage === 'Шлифовка к грунту') && !publisher.T && !publisher.description.toLowerCase().includes('в сборе'))
                     price += prices['обратки'][stage.stage] * publisher.square * (publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1) * (publisher.sides - 1)
             }
         } else if (stage.stage === 'Шлифовка к покраске') {
