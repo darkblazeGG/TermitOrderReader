@@ -92,6 +92,7 @@ async function permanent(controller) {
         logger.info('Read orders transformated')
 
         for (let order of orders) {
+            console.log('Sending order', order.number)
             let result = await controller.send(order).catch(logger.error.bind(logger))
             if (!result)
                 return setTimeout(permanent, 15 * Minute, controller)
