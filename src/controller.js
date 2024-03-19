@@ -150,6 +150,7 @@ class Controller {
                 body.path = body.path.slice(0, -1)
             if (!body.path.match('D:\\') && !body.path.match('\\\\'))
                 body.path = permanent.root + '\\' + body.path
+            console.log(body.path)
 
             if (!fs.existsSync(body.path))
                 return this.setOrderTask('Не могу найти такой файл, пожалуйста проверьте правильность его введения')
