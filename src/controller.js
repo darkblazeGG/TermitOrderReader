@@ -7,7 +7,7 @@ const newOrder = require('./newOrder')
 const log4js = require('log4js')
 const logger = log4js.getLogger('default')
 
-const { send: { root } } = require('./config.json')
+const { permanent, send: { root } } = require('./config.json')
 
 const Second = 1000
 const Minute = 60 * Second
@@ -148,6 +148,8 @@ class Controller {
                 body.path = body.path.slice(1,)
             if (body.path[body.path.length - 1] === '"')
                 body.path = body.path.slice(0, -1)
+            if (!body.path.match('D:\\') && !body.path.match('\\\\'))
+                body.path = permanent.root + '\\' + body.path
 
             if (!fs.existsSync(body.path))
                 return this.setOrderTask('Не могу найти такой файл, пожалуйста проверьте правильность его введения')
