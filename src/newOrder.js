@@ -195,12 +195,15 @@ function newOrder(file) {
                 stages.find(({ stage }) => stage === 'Нанесение грунта').H = 1
             }
 
-            if (P || G)
+            if (P)
                 stages.splice(stages.findIndex(stage => stage.stage === 'Распил') + 1, 0, {
-                    term: P + G,
-                    stage: 'Столярка',
-                    P,
-                    G
+                    term: 1,
+                    stage: 'Присадка'
+                })
+            if (G)
+                stages.splice(stages.findIndex(stage => stage.stage === 'Распил') + 1, 0, {
+                    term: 1,
+                    stage: 'Склейка'
                 })
 
             if (row[rows[0].findIndex(row => row === 'МДФ')] === '-' || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[3]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[4]))
@@ -279,15 +282,15 @@ function newOrder(file) {
         // console.log(publishers.map(({ stages, square }) => stages.filter(({ stage }) => stage.includes('Шлифовка')).map(({ stage, price }) => `${stage} (${square}) = ${price}`).join(', ')).join('\r\n'))
         if (publishers.includes(undefined))
             return
-        if (publishers.find(({ stages }) => stages.find(({ P }) => P)) && publishers.find(({ stages }) => stages.find(({ G }) => G)))
-            publishers = publishers.map(publisher => {
-                publisher.stages = publisher.stages.map(stage => {
-                    if (stage.P && !stage.G || stage.G && !stage.P)
-                        stage.term += 1
-                    return stage
-                })
-                return publisher
-            })
+        // if (publishers.find(({ stages }) => stages.find(({ P }) => P)) && publishers.find(({ stages }) => stages.find(({ G }) => G)))
+        //     publishers = publishers.map(publisher => {
+        //         publisher.stages = publisher.stages.map(stage => {
+        //             if (stage.P && !stage.G || stage.G && !stage.P)
+        //                 stage.term += 1
+        //             return stage
+        //         })
+        //         return publisher
+        //     })
 
         // if (!ws['N8'])
         //     return resolve('Нет даты поступления в работу, пожалуйста добавьте ее прежде чем загружать заказ в систему')
@@ -308,7 +311,11 @@ function newOrder(file) {
             },
             {
                 term: 0,
-                stage: 'Столярка'
+                stage: 'Присадка'
+            },
+            {
+                term: 0,
+                stage: 'Склейка'
             },
             {
                 term: 0,
@@ -563,8 +570,8 @@ function newOrder(file) {
             }
         }
 
-        if (publishers.find(({ T }) => T)) {
-            stages.splice(stages.findIndex(stage => stage.stage === 'Столярка'), 0,
+        if (publishers.find(({ T }) => T) && stages.find(stage => stage.stage === 'Склейка')) {
+            stages.splice(stages.findIndex(stage => stage.stage === 'Склейка'), 0,
                 {
                     stage: 'Шлифовка к грунту',
                     term: Math.ceil(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) / 20),
@@ -594,7 +601,7 @@ function newOrder(file) {
                 }
             )
             if (publishers.find(({ T, stages }) => T && stages.find(({ stage }) => stage === 'Покраска')))
-                stages.splice(stages.findIndex(stage => stage.stage === 'Столярка'), 0,
+                stages.splice(stages.findIndex(stage => stage.stage === 'Склейка'), 0,
                     {
                         stage: 'Покраска',
                         term: Math.ceil(publishers.filter(({ T, stages }) => T && stages.find(({ stage }) => stage === 'Покраска')).map(({ colourType, square }) => square * (typeof colourType === 'string' && colourType?.toLowerCase().match(/лак2/) ? 2 : 1)).reduce((a, b) => a + b, 0) / 10),
