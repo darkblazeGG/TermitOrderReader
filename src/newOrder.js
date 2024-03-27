@@ -545,7 +545,8 @@ function newOrder(file) {
                 H: stage.H && publishers.find(publisher => publisher.stages.find(item => item.stage === stage.stage && item.H && item.index === stage.index)) ? true : false
             }
         })
-        stages.find(({ stage, H }) => stage === 'Шлифовка к грунту' && H).term = 1
+        if (stages.find(({ stage, H }) => stage === 'Шлифовка к грунту' && H))
+            stages.find(({ stage, H }) => stage === 'Шлифовка к грунту' && H).term = 1
         if (stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2)) {
             let value = stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).factvalue
             stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2).term = 0
