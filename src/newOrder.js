@@ -217,14 +217,14 @@ function newOrder(file) {
                 stages[stages.findIndex(stage => stage.stage === 'Покраска')]
                 stages.splice(stages.findIndex(stage => stage.stage === 'Покраска') + 1, 0,
                     {
-                        term: 3,
+                        term: Math.ceil(square / 4),
                         stage: 'Полировка'
                     }
                 )
                 if (row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 2 && !row[rows[0].findIndex(row => row === 'Тип краски')].toLowerCase().match(/глянец2/))
                     stages[stages.findIndex(stage => stage.stage === 'Нанесение грунта')].term++
-                if (squere > 10 || row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 2 || row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'все' || row[rows[0].findIndex(row => row === 'Тип краски')].toLowerCase().match(/лак/))
-                    stages[stages.findIndex(stage => stage.stage === 'Полировка')].term += 2
+                // if (squere > 10 || row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 2 || row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'все' || row[rows[0].findIndex(row => row === 'Тип краски')].toLowerCase().match(/лак/))
+                //     stages[stages.findIndex(stage => stage.stage === 'Полировка')].term += 2
                 if (row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'все')
                     row[rows[0].findIndex(row => row === 'Кол-во сторон')] = 2
                 let paintstages = row[rows[0].findIndex(row => row === 'Кол-во сторон')] - 1 + ((row[rows[0].findIndex(row => row === 'Цвет')].toString() || undefined)?.toLowerCase().split(',').length || 1) - 1
