@@ -547,6 +547,7 @@ function newOrder(file) {
         })
         if (stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2)) {
             let value = stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).factvalue
+            stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2).term = 0
             if (value === 0) {
                 let stage = stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index)
                 stages.splice(stages.findIndex(({ stage, index }) => stage === 'Шлифовка к грунту' && !index), 1)
@@ -559,6 +560,7 @@ function newOrder(file) {
         }
         if (stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && index === 2)) {
             let value = stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && !index).factvalue
+            stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && index === 2).term = 0
             if (value === 0) {
                 let stage = stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && !index)
                 stages.splice(stages.findIndex(({ stage, index }) => stage === 'Шлифовка к покраске' && !index), 1)
