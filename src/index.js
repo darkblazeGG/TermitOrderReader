@@ -3,6 +3,7 @@ const permanent = require('./permanent')
 require('./loggerConfigurer')
 
 const log4js = require('log4js')
+// const test = require('./test')
 const logger = log4js.getLogger('default')
 
 process.on('uncaughtException', error => {
@@ -20,6 +21,7 @@ controller.sign().then(() => {
         controller.setOrderTask()
         // controller.updateAll()
         logger.info('Permanent reading orders directory started')
-        permanent(controller)
+        // permanent(controller)
+        // test(controller)
     })
 }).catch(logger.error.bind(logger))
