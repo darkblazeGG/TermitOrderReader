@@ -196,7 +196,7 @@ class Controller {
             if (body.path[body.path.length - 1] === '"')
                 body.path = body.path.slice(0, -1)
             if (!body.path.replaceAll(/[\d+ {0,},{0,}]/g, '').length)
-                body.orders = body.path.split(/ {0,},{0,}/).map(number => +number)
+                body.orders = body.path.split(/ {0,}, {0,}/).map(number => +number)
             else if (!body.path.match(/D:\\/) && !body.path.match(/\\\\/))
                 body.path = permanent.root + '\\' + body.path
             console.log(body.path)
@@ -206,14 +206,14 @@ class Controller {
 
                 body.orders = (await Promise.all(body.pathes.map(newOrder)).catch(logger.error.bind(logger)))?.filter(order => typeof order != 'string')
 
-                for (let order of orders) {
+                for (let order of body.orders) {
                     console.log('Sended order', order.number)
                     let result = await this.send(order).catch(logger.error.bind(logger))
 
                     logger.info(result)
                 }
 
-                return this.setOrderTask.bind(this)()
+                return this.setOrderTask.bind(this)('Orders created successfully')
             }
 
             if (!fs.existsSync(body.path))
