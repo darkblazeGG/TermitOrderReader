@@ -15,13 +15,13 @@ const controller = new Controller()
 controller.sign().then(() => {
     logger.info('Controller signed successfully')
     controller.verify()
-    controller.lounch().then(result => {
-        logger.info(result)
-        logger.info('Controller document loaded successfully')
+    // controller.lounch().then(result => {
+        // logger.info(result)
+        // logger.info('Controller document loaded successfully')
         controller.setOrderTask()
         // controller.updateAll()
         logger.info('Permanent reading orders directory started')
         // permanent(controller)
         // test(controller)
-    })
+    // })
 }).catch(logger.error.bind(logger))
