@@ -1,8 +1,8 @@
 const prices = require('./prices.json')
 
 const Type = [/прямой/, /фрез/, /f/, /фас кл/, /фасад клиента/, /тумба/]
-const eFs = ['f-01', 'f-02', 'f-03', 'f-04', 'f-06', 'f-07', 'f-08', 'f-09', 'f-10', 'f-11', 'f-15', 'f-16', 'f-18', 'f-19', 'F20', 'f-21']
-const sFs = ['f-05', 'f-12', 'f-13', 'f-14', 'f-17']
+const eFs = ['f-01', 'f-03', 'f-04', 'f-08', 'f-10', 'f-11', 'f-15', 'f-20', 'f-21']
+const sFs = ['f-02', 'f-05', 'f-06', 'f-07', 'f-09', 'f-12', 'f-13', 'f-14', 'f-16', 'f-17', 'f-18', 'f-19']
 
 function getPublisherSalary(publisher) {
     for (let stage of publisher.stages) {
