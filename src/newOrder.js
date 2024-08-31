@@ -192,7 +192,8 @@ function newOrder(file) {
                         index: 1,
                         H
                     })
-                stages.find(({ stage }) => stage === 'Нанесение грунта').H = 1
+                if (stages.find(({ stage }) => stage === 'Нанесение грунта'))
+                    stages.find(({ stage }) => stage === 'Нанесение грунта').H = 1
             }
 
             if (P)
