@@ -433,26 +433,26 @@ function newOrder(file) {
 
                     if (stage.stage === 'Покраска')
                         if (publishers.filter(({ sides }) => sides === 2).length === publishers.length || publishers.filter(({ sides }) => sides === 1.5).length === publishers.length || publishers.filter(({ sides }) => sides === 1).length === publishers.length)
-                            if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('лак2')).length === publishers.length)
+                            if (publishers.filter(({ colourType }) => colourType && colourType.toLowerCase().includes('лак2')).length === publishers.length)
                                 if (!stage.index)
                                     price = 0.5 * (prices['прямые'][stage.stage] + prices['лак']['односторонний'])
                                 else
                                     price = 0.5 * (prices['обратки'][stage.stage] + prices['лак']['двусторонний'])
-                            else if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('лак') && !colourType.toLowerCase().includes('лак2')).length === publishers.length)
+                            else if (publishers.filter(({ colourType }) => colourType && colourType.toLowerCase().includes('лак') && !colourType.toLowerCase().includes('лак2')).length === publishers.length)
                                 if (!stage.index)
                                     price = 0.5 * (prices['прямые'][stage.stage] + prices['лак']['односторонний'])
                                 else
                                     price = 0.5 * prices['обратки'][stage.stage]
-                            else if (publishers.filter(({ colourType }) => !colourType.toLowerCase().includes('лак')).length === publishers.length)
+                            else if (publishers.filter(({ colourType }) => colourType && !colourType.toLowerCase().includes('лак')).length === publishers.length)
                                 if (!stage.index)
                                     price = 0.5 * prices['прямые'][stage.stage]
                                 else
                                     price = 0.5 * prices['обратки'][stage.stage]
 
                     if (stage.stage === 'Полировка')
-                        if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('глянец2')).length === publishers.length)
+                        if (publishers.filter(({ colourType }) => colourType && colourType.toLowerCase().includes('глянец2')).length === publishers.length)
                             price = 0.5 * prices['глянец']['двусторонний']
-                        else if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('глянец') && !colourType.toLowerCase().includes('глянец2')).length === publishers.length)
+                        else if (publishers.filter(({ colourType }) => colourType && colourType.toLowerCase().includes('глянец') && !colourType.toLowerCase().includes('глянец2')).length === publishers.length)
                             price = 0.5 * prices['глянец']['односторонний']
 
                     if (stage.stage === 'Шлифовка к грунту' && stage.H || stage.stage != 'Шлифовка к грунту' && price != publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0))
@@ -478,26 +478,26 @@ function newOrder(file) {
 
                     if (stage.stage === 'Покраска')
                         if (publishers.filter(({ sides }) => sides === 2).length === publishers.length || publishers.filter(({ sides }) => sides === 1.5).length === publishers.length || publishers.filter(({ sides }) => sides === 1).length === publishers.length)
-                            if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('лак2')).length === publishers.length)
+                            if (publishers.filter(({ colourType }) => colourType && colourType.toLowerCase().includes('лак2')).length === publishers.length)
                                 if (!stage.index)
                                     price = (prices['прямые'][stage.stage] + prices['лак']['односторонний'])
                                 else
                                     price = (prices['обратки'][stage.stage] + prices['лак']['двусторонний'])
-                            else if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('лак') && !colourType.toLowerCase().includes('лак2')).length === publishers.length)
+                            else if (publishers.filter(({ colourType }) => colourType && colourType.toLowerCase().includes('лак') && !colourType.toLowerCase().includes('лак2')).length === publishers.length)
                                 if (!stage.index)
                                     price = (prices['прямые'][stage.stage] + prices['лак']['односторонний'])
                                 else
                                     price = prices['обратки'][stage.stage]
-                            else if (publishers.filter(({ colourType }) => !colourType.toLowerCase().includes('лак')).length === publishers.length)
+                            else if (publishers.filter(({ colourType }) => colourType && !colourType.toLowerCase().includes('лак')).length === publishers.length)
                                 if (!stage.index)
                                     price = prices['прямые'][stage.stage]
                                 else
                                     price = prices['обратки'][stage.stage]
 
                     if (stage.stage === 'Полировка')
-                        if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('глянец2')).length === publishers.length)
+                        if (publishers.filter(({ colourType }) => colourType && colourType.toLowerCase().includes('глянец2')).length === publishers.length)
                             price = prices['глянец']['двусторонний']
-                        else if (publishers.filter(({ colourType }) => colourType.toLowerCase().includes('глянец') && !colourType.toLowerCase().includes('глянец2')).length === publishers.length)
+                        else if (publishers.filter(({ colourType }) => colourType && colourType.toLowerCase().includes('глянец') && !colourType.toLowerCase().includes('глянец2')).length === publishers.length)
                             price = prices['глянец']['односторонний']
 
                     if (stage.stage === 'Шлифовка к грунту' && stage.H || stage.stage != 'Шлифовка к грунту' && price != publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0))
