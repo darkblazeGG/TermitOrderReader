@@ -131,7 +131,7 @@ function getPublisherSalary(publisher) {
             else if (publisher.colourType && publisher.colourType?.match(/глянец/))
                 price += prices['глянец']['односторонний'] * publisher.square
         } else if (stage.stage === 'Упаковка') {
-            if ((publisher.sides === 1 || publisher.sides === 1.5) && !publisher.colourType && publisher.colourType?.match(/глянец/))
+            if ((publisher.sides === 1 || publisher.sides === 1.5) && publisher.colourType && publisher.colourType?.match(/глянец/))
                 price += prices['упаковка']['чистка'] * publisher.square
             price += prices['упаковка'][stage.stage] * publisher.square
         }
