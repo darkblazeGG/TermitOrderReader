@@ -1,6 +1,11 @@
 const request = require('request')
 const fs = require('fs')
 const XLSX = require('xlsx')
+// const express = require('express')
+// const app = express()
+// app.use(require('body-parser').json({ limit: "50mb" }))
+// app.use(require('body-parser').urlencoded({ limit: "50mb", extended: true }))
+
 
 const newOrder = require('./newOrder')
 
@@ -18,7 +23,11 @@ class Controller {
     #jwt
     #jwtP
 
-    constructor() { }
+    constructor() {
+        // app.get('/get', (request, response) => {
+
+        // })
+    }
 
     sign() {
         return new Promise((resolve, reject) => {
@@ -197,7 +206,7 @@ class Controller {
                 body.path = body.path.slice(0, -1)
             if (!body.path.replaceAll(/[\d+ {0,},{0,}]/g, '').length)
                 body.orders = body.path.split(/ {0,}, {0,}/).map(number => +number)
-            else if (!body.path.match(/D:\\/) && !body.path.match(/\\\\/))
+            else if (!(body.path.match(/D:\\/) || body.path.match(/C:\\/)) && !body.path.match(/\\\\/))
                 body.path = permanent.root + '\\' + body.path
             console.log(body.path)
 

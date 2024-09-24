@@ -302,9 +302,10 @@ function newOrder(file) {
         if (!created)
             created = ws['M8']?.v ? ExcelDateToJSDate(ws['M8']?.v) : undefined
         console.log(file)
-        let lastDate = workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
-        if (!lastDate)
-            lastDate = workbook.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
+        let lastDate = created + 31 * Day
+        // let lastDate = workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
+        // if (!lastDate)
+        //     lastDate = workbook.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['N' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
 
         let stages = [
             {
