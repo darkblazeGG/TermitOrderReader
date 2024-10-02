@@ -271,7 +271,7 @@ function newOrder(file) {
                 T,
                 H,
                 colour: row[rows[0].findIndex(row => row === 'Цвет')],
-                category: row[rows[0].findIndex(row => row === 'Категория')],
+                category: row[rows[0].findIndex(row => row === 'Категория')] || '',
                 colourType: row[rows[0].findIndex(row => row === 'Тип краски')],
                 sides: typeof row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'number' ? row[rows[0].findIndex(row => row === 'Кол-во сторон')] : 2,
                 radius: row[rows[0].findIndex(row => row === 'Радиус')] === 'мин' ? 1 : typeof row[rows[0].findIndex(row => row === 'МДФ')] === 'number' ? row[rows[0].findIndex(row => row === 'МДФ')] : 0,
