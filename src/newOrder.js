@@ -82,7 +82,7 @@ function newOrder(file) {
                 },
                 {
                     term: Math.ceil(square / 20),
-                    stage: 'Шлифовка к грунту'
+                    stage: 'Подготовка к грунту'
                 },
                 {
                     term: 1,
@@ -90,7 +90,7 @@ function newOrder(file) {
                 },
                 {
                     term: Math.ceil(square / 20),
-                    stage: 'Шлифовка к покраске'
+                    stage: 'Подготовка к покраске'
                 },
                 {
                     term: 1,
@@ -117,36 +117,36 @@ function newOrder(file) {
                 stages.splice(stages.findIndex(stage => stage.stage === 'Распил') + 1, 0,
                     {
                         term: Math.ceil(square / 7),
-                        stage: 'Шлифовка к изолятору'
+                        stage: 'Подготовка к изолятору'
                     },
                     {
                         term: 1,
                         stage: 'Нанесение изолятора'
                     }
                 )
-                stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к грунту') + 1, 0, {
+                stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к грунту') + 1, 0, {
                     term: 1,
-                    stage: 'Шлифовка к грунту',
+                    stage: 'Подготовка к грунту',
                     index: 2
                 })
-                stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к покраске') + 1, 0, {
+                stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к покраске') + 1, 0, {
                     term: 1,
-                    stage: 'Шлифовка к покраске',
+                    stage: 'Подготовка к покраске',
                     index: 2
                 })
             }
             if (row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(/шпон/)) {
-                stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к грунту'), 1)
+                stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к грунту'), 1)
                 stages.splice(stages.findIndex(stage => stage.stage === 'Нанесение грунта'), 1)
             } else if (row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(/профиль|метал|пластик/)) {
-                stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к грунту'), 1)
+                stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к грунту'), 1)
                 stages.splice(stages.findIndex(stage => stage.stage === 'Нанесение грунта'), 1)
-                stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к покраске'), 1)
+                stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к покраске'), 1)
             } else if (row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(/карниз/)) {
                 stages.splice(stages.findIndex(stage => stage.stage === 'Распил') + 1, 0,
                     {
                         term: 1,
-                        stage: 'Шлифовка к изолятору'
+                        stage: 'Подготовка к изолятору'
                     },
                     {
                         term: 1,
@@ -155,7 +155,7 @@ function newOrder(file) {
                 )
             }
             if (row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(/лдсп/)) {
-                stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к грунту'), 1)
+                stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к грунту'), 1)
                 stages.splice(stages.findIndex(stage => stage.stage === 'Нанесение грунта'), 1)
                 stages.splice(stages.findIndex(stage => stage.stage === 'Покраска'), 0, {
                     term: 1,
@@ -179,16 +179,16 @@ function newOrder(file) {
             if (H) {
                 if (row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(/шпон/)) {
                 } else if ((row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[2]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[1])) && !row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[0]))
-                    stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к изолятору') + 1, 0, {
+                    stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к изолятору') + 1, 0, {
                         term: 1,
-                        stage: 'Шлифовка к изолятору',
+                        stage: 'Подготовка к изолятору',
                         index: 1,
                         H
                     })
                 else
-                    stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к грунту') + 1, 0, {
+                    stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к грунту') + 1, 0, {
                         term: 1,
-                        stage: 'Шлифовка к грунту',
+                        stage: 'Подготовка к грунту',
                         index: 1,
                         H
                     })
@@ -271,6 +271,7 @@ function newOrder(file) {
                 T,
                 H,
                 colour: row[rows[0].findIndex(row => row === 'Цвет')],
+                category: row[rows[0].findIndex(row => row === 'Категория')],
                 colourType: row[rows[0].findIndex(row => row === 'Тип краски')],
                 sides: typeof row[rows[0].findIndex(row => row === 'Кол-во сторон')] === 'number' ? row[rows[0].findIndex(row => row === 'Кол-во сторон')] : 2,
                 radius: row[rows[0].findIndex(row => row === 'Радиус')] === 'мин' ? 1 : typeof row[rows[0].findIndex(row => row === 'МДФ')] === 'number' ? row[rows[0].findIndex(row => row === 'МДФ')] : 0,
@@ -280,7 +281,7 @@ function newOrder(file) {
             getPublisherSalary(publisher)
             return publisher
         })
-        // console.log(publishers.map(({ stages, square }) => stages.filter(({ stage }) => stage.includes('Шлифовка')).map(({ stage, price }) => `${stage} (${square}) = ${price}`).join(', ')).join('\r\n'))
+        // console.log(publishers.map(({ stages, square }) => stages.filter(({ stage }) => stage.includes('Подготовка')).map(({ stage, price }) => `${stage} (${square}) = ${price}`).join(', ')).join('\r\n'))
         if (publishers.includes(undefined))
             return
         // if (publishers.find(({ stages }) => stages.find(({ P }) => P)) && publishers.find(({ stages }) => stages.find(({ G }) => G)))
@@ -322,7 +323,7 @@ function newOrder(file) {
             },
             {
                 term: 0,
-                stage: 'Шлифовка к изолятору'
+                stage: 'Подготовка к изолятору'
             },
             {
                 term: 0,
@@ -330,7 +331,7 @@ function newOrder(file) {
             },
             {
                 term: 0,
-                stage: 'Шлифовка к грунту'
+                stage: 'Подготовка к грунту'
             },
             {
                 term: 0,
@@ -338,7 +339,7 @@ function newOrder(file) {
             },
             {
                 term: 0,
-                stage: 'Шлифовка к покраске'
+                stage: 'Подготовка к покраске'
             },
             {
                 term: 0,
@@ -363,30 +364,30 @@ function newOrder(file) {
                 stage: 'Отгрузка'
             }
         ]
-        if (publishers.find(({ stages }) => stages.filter(({ stage }) => stage === 'Шлифовка к изолятору').length === 2))
-            stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к изолятору') + 1, 0, {
+        if (publishers.find(({ stages }) => stages.filter(({ stage }) => stage === 'Подготовка к изолятору').length === 2))
+            stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к изолятору') + 1, 0, {
                 term: 0,
-                stage: 'Шлифовка к изолятору',
+                stage: 'Подготовка к изолятору',
                 H: true,
                 index: 1
             })
-        else if (publishers.find(({ stages }) => stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 1)))
-            stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к грунту') + 1, 0, {
+        else if (publishers.find(({ stages }) => stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && index === 1)))
+            stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к грунту') + 1, 0, {
                 term: 0,
-                stage: 'Шлифовка к грунту',
+                stage: 'Подготовка к грунту',
                 H: true,
                 index: 1
             })
-        if (publishers.find(({ stages }) => stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2)))
-            stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к грунту') + 1, 0, {
+        if (publishers.find(({ stages }) => stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && index === 2)))
+            stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к грунту') + 1, 0, {
                 term: 0,
-                stage: 'Шлифовка к грунту',
+                stage: 'Подготовка к грунту',
                 index: 2
             })
-        if (publishers.find(({ stages }) => stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && index === 2)))
-            stages.splice(stages.findIndex(stage => stage.stage === 'Шлифовка к покраске') + 1, 0, {
+        if (publishers.find(({ stages }) => stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && index === 2)))
+            stages.splice(stages.findIndex(stage => stage.stage === 'Подготовка к покраске') + 1, 0, {
                 term: 0,
-                stage: 'Шлифовка к покраске',
+                stage: 'Подготовка к покраске',
                 index: 2
             })
         if (publishers.find(({ stages }) => stages.find(({ stage, index }) => stage === 'Аппликация' && index === undefined)))
@@ -416,7 +417,7 @@ function newOrder(file) {
             let price = publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0)
             if (price != 0 /* && publishers.filter(({ H }) => H).length === publishers.length || publishers.filter(({ H }) => !H).length === publishers.length */)
                 if (value <= 0.5) {
-                    if (stage.stage.includes('Шлифовка') || stage.stage === 'Нанесение грунта')
+                    if (stage.stage.includes('Подготовка') || stage.stage === 'Нанесение грунта')
                         if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length) {
                             if (publishers.filter(({ description }) => sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
                                 price = 0.5 * prices['фрезированные'][stage.stage]['сложная']
@@ -458,10 +459,10 @@ function newOrder(file) {
                         else if (publishers.filter(({ colourType }) => colourType && typeof colourType === 'string' && colourType.toLowerCase().includes('глянец') && !colourType.toLowerCase().includes('глянец2')).length === publishers.length)
                             price = 0.5 * prices['глянец']['односторонний']
 
-                    if (stage.stage === 'Шлифовка к грунту' && stage.H || stage.stage != 'Шлифовка к грунту' && price != publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0))
+                    if (stage.stage === 'Подготовка к грунту' && stage.H || stage.stage != 'Подготовка к грунту' && price != publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0))
                         price += publishers.filter(({ H }) => H).map(({ amount }) => amount).reduce((a, b) => a + b, 0) * (prices['ручки'][stage.stage] || 0)
                 } else if (value <= 1) {
-                    if (stage.stage.includes('Шлифовка') || stage.stage === 'Нанесение грунта')
+                    if (stage.stage.includes('Подготовка') || stage.stage === 'Нанесение грунта')
                         if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length) {
                             if (publishers.filter(({ description }) => sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
                                 price = prices['фрезированные'][stage.stage]['сложная']
@@ -503,13 +504,13 @@ function newOrder(file) {
                         else if (publishers.filter(({ colourType }) => colourType && typeof colourType === 'string' && colourType.toLowerCase().includes('глянец') && !colourType.toLowerCase().includes('глянец2')).length === publishers.length)
                             price = prices['глянец']['односторонний']
 
-                    if (stage.stage === 'Шлифовка к грунту' && stage.H || stage.stage != 'Шлифовка к грунту' && price != publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0))
+                    if (stage.stage === 'Подготовка к грунту' && stage.H || stage.stage != 'Подготовка к грунту' && price != publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0))
                         price += publishers.filter(({ H }) => H).map(({ amount }) => amount).reduce((a, b) => a + b, 0) * (prices['ручки'][stage.stage] || 0)
                 }
 
             let addition = []
-            if (publishers.find(({ stages }) => stages.find(({ stage }) => stage === 'Шлифовка к изолятору')) && stage.stage.match(/Шлифовка|Распил/))
-                addition.push(`Ф: ${round(publishers.filter(({ stages }) => stages.find(({ stage }) => stage === 'Шлифовка к изолятору')).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`)
+            if (publishers.find(({ stages }) => stages.find(({ stage }) => stage === 'Подготовка к изолятору')) && stage.stage.match(/Подготовка|Распил/))
+                addition.push(`Ф: ${round(publishers.filter(({ stages }) => stages.find(({ stage }) => stage === 'Подготовка к изолятору')).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`)
             if (publishers.find(({ colourType, stages }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак/) && (stage.stage === 'Полировка' ? stages.find(({ stage }) => stage === 'Полировка') : true)) && stage.stage.match(/Покраска|Полировка/))
                 addition.push(`Л: ${round(publishers.filter(({ colourType, stages }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак/) && (stage.stage === 'Полировка' ? stages.find(({ stage }) => stage === 'Полировка') : true)).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`)
             if (publishers.find(({ colourType, stages }) => typeof colourType === 'string' && colourType?.toLowerCase().match(/лак2/) && (stage.stage === 'Полировка' ? stages.find(({ stage }) => stage === 'Полировка') : true)) && stage.stage.match(/Покраска|Полировка/))
@@ -523,15 +524,15 @@ function newOrder(file) {
                         factvalue += publisher.square * (typeof publisher.colourType === 'string' && publisher.colourType?.toLowerCase().match(/лак2/) ? 2 : 1)
                     else
                         factvalue += publisher.square * (typeof publisher.colourType === 'string' && publisher.colourType?.toLowerCase().match(/лак/) ? 2 : 1)
-                else if (stage.stage.match('Шлифовка'))
-                    if (stage.stage === 'Шлифовка к грунту' || stage.stage === 'Шлифовка к покраске')
-                        if (publisher.stages.find(({ stage, index }) => (stage === 'Шлифовка к грунту' || stage.stage === 'Шлифовка к покраске') && index === 2)) {
+                else if (stage.stage.match('Подготовка'))
+                    if (stage.stage === 'Подготовка к грунту' || stage.stage === 'Подготовка к покраске')
+                        if (publisher.stages.find(({ stage, index }) => (stage === 'Подготовка к грунту' || stage.stage === 'Подготовка к покраске') && index === 2)) {
                             if (stage.index === 2)
                                 factvalue += publisher.square * 20 / 7
                         } else
-                            factvalue += publisher.square * (publisher.stages.find(({ stage }) => stage === 'Шлифовка к изолятору') ? 20 / 7 : 1)
+                            factvalue += publisher.square * (publisher.stages.find(({ stage }) => stage === 'Подготовка к изолятору') ? 20 / 7 : 1)
                     else
-                        factvalue += publisher.square * (publisher.stages.find(({ stage }) => stage === 'Шлифовка к изолятору') ? 20 / 7 : 1)
+                        factvalue += publisher.square * (publisher.stages.find(({ stage }) => stage === 'Подготовка к изолятору') ? 20 / 7 : 1)
                 else
                     factvalue += publisher.square
             factvalue = round(factvalue, 2)
@@ -548,43 +549,43 @@ function newOrder(file) {
                 H: stage.H && publishers.find(publisher => publisher.stages.find(item => item.stage === stage.stage && item.H && item.index === stage.index)) ? true : false
             }
         })
-        if (stages.find(({ stage, H }) => stage === 'Шлифовка к грунту' && H))
-            stages.find(({ stage, H }) => stage === 'Шлифовка к грунту' && H).term = 1
-        if (stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2)) {
-            let value = stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).factvalue
-            stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2).term = 0
+        if (stages.find(({ stage, H }) => stage === 'Подготовка к грунту' && H))
+            stages.find(({ stage, H }) => stage === 'Подготовка к грунту' && H).term = 1
+        if (stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && index === 2)) {
+            let value = stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && !index).factvalue
+            stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && index === 2).term = 0
             if (value === 0) {
-                let stage = stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index)
-                stages.splice(stages.findIndex(({ stage, index }) => stage === 'Шлифовка к грунту' && !index), 1)
-                stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2).term = stage.term
-                stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && index === 2).index = stage.index
+                let stage = stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && !index)
+                stages.splice(stages.findIndex(({ stage, index }) => stage === 'Подготовка к грунту' && !index), 1)
+                stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && index === 2).term = stage.term
+                stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && index === 2).index = stage.index
             } else {
-                stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).value = value
-                stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).addition = stages.find(({ stage, index }) => stage === 'Шлифовка к грунту' && !index).addition.replace(/Ф: \d+\.?\d{0,}/, '')
+                stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && !index).value = value
+                stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && !index).addition = stages.find(({ stage, index }) => stage === 'Подготовка к грунту' && !index).addition.replace(/Ф: \d+\.?\d{0,}/, '')
             }
         }
-        if (stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && index === 2)) {
-            let value = stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && !index).factvalue
-            stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && index === 2).term = 0
+        if (stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && index === 2)) {
+            let value = stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && !index).factvalue
+            stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && index === 2).term = 0
             if (value === 0) {
-                let stage = stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && !index)
-                stages.splice(stages.findIndex(({ stage, index }) => stage === 'Шлифовка к покраске' && !index), 1)
-                stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && index === 2).term = stage.term
-                stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && index === 2).index = stage.index
+                let stage = stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && !index)
+                stages.splice(stages.findIndex(({ stage, index }) => stage === 'Подготовка к покраске' && !index), 1)
+                stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && index === 2).term = stage.term
+                stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && index === 2).index = stage.index
             } else {
-                stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && !index).value = value
-                stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && !index).addition = stages.find(({ stage, index }) => stage === 'Шлифовка к покраске' && !index).addition.replace(/Ф: \d+\.?\d{0,}/, '')
+                stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && !index).value = value
+                stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && !index).addition = stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && !index).addition.replace(/Ф: \d+\.?\d{0,}/, '')
             }
         }
 
         if (publishers.find(({ T }) => T) && stages.find(stage => stage.stage === 'Склейка')) {
             stages.splice(stages.findIndex(stage => stage.stage === 'Склейка'), 0,
                 {
-                    stage: 'Шлифовка к грунту',
+                    stage: 'Подготовка к грунту',
                     term: Math.ceil(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) / 20),
                     value: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
                     factvalue: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
-                    // price: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) * prices['обратки']['Шлифовка к грунту'] * 1.5, 2),
+                    // price: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) * prices['обратки']['Подготовка к грунту'] * 1.5, 2),
                     weekend: false,
                     addition: `Т: ${round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`,
                 },
@@ -598,11 +599,11 @@ function newOrder(file) {
                     addition: `Т: ${round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`,
                 },
                 {
-                    stage: 'Шлифовка к покраске',
+                    stage: 'Подготовка к покраске',
                     term: Math.ceil(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) / 20),
                     value: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
                     factvalue: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2),
-                    price: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) * prices['обратки']['Шлифовка к покраске'], 0),
+                    price: round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0) * prices['обратки']['Подготовка к покраске'], 0),
                     weekend: false,
                     addition: `Т: ${round(publishers.filter(({ T }) => T).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`,
                 }
@@ -672,7 +673,7 @@ function newOrder(file) {
             if (stages[i].stage === 'Полировка') {
                 stages[i].delay = 2
             }
-            if ((stages[i].stage === 'Шлифовка к грунту' || stages[i].stage === 'Шлифовка к покраске') && stages[i].index === 2) {
+            if ((stages[i].stage === 'Подготовка к грунту' || stages[i].stage === 'Подготовка к покраске') && stages[i].index === 2) {
                 stages[i].delay = 0
                 let days = []
                 let appl = last
