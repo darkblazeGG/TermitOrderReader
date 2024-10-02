@@ -14,7 +14,7 @@ function getPublisherSalary(publisher) {
                 if (stage.H)
                     price += prices['ручки']['Подготовка к грунту'] * publisher.amount
                 else if (publisher.H && stage.stage === 'Подготовка к изолятору' && publisher.stages.find(({ H }) => H).stage === 'Подготовка к изолятору') {
-                    if (sFs.find(F => publisher.description.toLowerCase().includes(F)))
+                    if (publisher.category.toLowerCase().includes('f') || sFs.find(F => publisher.description.toLowerCase().includes(F)))
                         price -= prices['фрезированные'][stage.stage]['сложная'] * publisher.square
                     else
                         price -= prices['фрезированные'][stage.stage]['простая'] * publisher.square
@@ -36,13 +36,13 @@ function getPublisherSalary(publisher) {
                 if (stage.H)
                     price += prices['ручки'][stage.stage] * publisher.amount
                 else if (publisher.H && stage.stage === 'Подготовка к грунту' && publisher.stages.find(({ H }) => H).stage === 'Подготовка к грунту') {
-                    if ((publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && !publisher.description.toLowerCase().match(Type[0]))
+                    if ((publisher.category.toLowerCase().includes('f') || publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && !publisher.description.toLowerCase().match(Type[0]))
                         if (publisher.category.toLowerCase().includes('f') || sFs.find(F => publisher.description.toLowerCase().includes(F)))
                             price -= prices['фрезированные'][stage.stage]['сложная'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                         else
                             price -= prices['фрезированные'][stage.stage]['простая'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                     else {
-                        if ((publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && publisher.description.toLowerCase().match(Type[0]))
+                        if ((publisher.category.toLowerCase().includes('f') || publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && publisher.description.toLowerCase().match(Type[0]))
                             price -= 50 * publisher.square
                         price -= prices['прямые'][stage.stage] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                         if (publisher.thickness === 22 && stage.stage === 'Нанесение грунта')
@@ -65,7 +65,7 @@ function getPublisherSalary(publisher) {
                         else
                             price += prices['фрезированные'][stage.stage]['простая'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                     else {
-                        if ((publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && publisher.description.toLowerCase().match(Type[0]))
+                        if ((publisher.category.toLowerCase().includes('f') || publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && publisher.description.toLowerCase().match(Type[0]))
                             price += 50 * publisher.square
                         price += prices['прямые'][stage.stage] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                         if (publisher.thickness === 22 && stage.stage === 'Нанесение грунта')
@@ -82,19 +82,19 @@ function getPublisherSalary(publisher) {
                 if (publisher.H)
                     price += prices['ручки'][stage.stage] * publisher.amount
                 if (publisher.stages.find(({ stage, index }) => stage === 'Подготовка к покраске' && index === 2)) {
-                    if (stage.index === 2 && (publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && !publisher.description.toLowerCase().match(Type[0]))
+                    if (stage.index === 2 && (publisher.category.toLowerCase().includes('f') || publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && !publisher.description.toLowerCase().match(Type[0]))
                         if (publisher.category.toLowerCase().includes('f') || sFs.find(F => publisher.description.toLowerCase().includes(F)))
                             price += prices['фрезированные'][stage.stage]['сложная'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                         else
                             price += prices['фрезированные'][stage.stage]['простая'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                 } else {
                     if ((publisher.category.toLowerCase().includes('f') || publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && !publisher.description.toLowerCase().match(Type[0]))
-                        if (sFs.find(F => publisher.description.toLowerCase().includes(F)))
+                        if (publisher.category.toLowerCase().includes('f') || sFs.find(F => publisher.description.toLowerCase().includes(F)))
                             price += prices['фрезированные'][stage.stage]['сложная'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                         else
                             price += prices['фрезированные'][stage.stage]['простая'] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                     else {
-                        if ((publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && publisher.description.toLowerCase().match(Type[0]))
+                        if ((publisher.category.toLowerCase().includes('f') || publisher.description.toLowerCase().match(Type[2]) || publisher.description.toLowerCase().match(Type[1])) && publisher.description.toLowerCase().match(Type[0]))
                             price += 50 * publisher.square
                         price += prices['прямые'][stage.stage] * publisher.square * (publisher.T || publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
                         if (publisher.thickness === 22 && stage.stage === 'Нанесение грунта')
