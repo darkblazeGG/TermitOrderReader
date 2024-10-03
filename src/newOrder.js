@@ -418,10 +418,10 @@ function newOrder(file) {
             if (price != 0 /* && publishers.filter(({ H }) => H).length === publishers.length || publishers.filter(({ H }) => !H).length === publishers.length */)
                 if (value <= 0.5) {
                     if (stage.stage.includes('Подготовка') || stage.stage === 'Нанесение грунта')
-                        if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length) {
-                            if (publishers.filter(({ description }) => sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                        if (publishers.filter(({ description, category }) => (category.toLowerCase().includes('f') || description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length) {
+                            if (publishers.filter(({ description, category }) => category.toLowerCase().includes('f') || sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
                                 price = 0.5 * prices['фрезированные'][stage.stage]['сложная']
-                            else if (publishers.filter(({ description }) => !sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                            else if (publishers.filter(({ description, category }) => !category.toLowerCase().includes('f') && !sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
                                 price = 0.5 * prices['фрезированные'][stage.stage]['простая']
                         } else if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && description?.toLowerCase().match(Type[0])).length === publishers.length)
                             price = 0.5 * (prices['прямые'][stage.stage] + 50)
@@ -463,10 +463,10 @@ function newOrder(file) {
                         price += publishers.filter(({ H }) => H).map(({ amount }) => amount).reduce((a, b) => a + b, 0) * (prices['ручки'][stage.stage] || 0)
                 } else if (value <= 1) {
                     if (stage.stage.includes('Подготовка') || stage.stage === 'Нанесение грунта')
-                        if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length) {
-                            if (publishers.filter(({ description }) => sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                        if (publishers.filter(({ description, category }) => (category.toLowerCase().includes('f') || description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && !description?.toLowerCase().match(Type[0])).length === publishers.length) {
+                            if (publishers.filter(({ description, category }) => category.toLowerCase().includes('f') || sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
                                 price = prices['фрезированные'][stage.stage]['сложная']
-                            else if (publishers.filter(({ description }) => !sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
+                            else if (publishers.filter(({ description, category }) => !category.toLowerCase().includes('f') && !sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
                                 price = prices['фрезированные'][stage.stage]['простая']
                         } else if (publishers.filter(({ description }) => (description?.toLowerCase().match(Type[2]) || description?.toLowerCase().match(Type[1])) && description?.toLowerCase().match(Type[0])).length === publishers.length)
                             price = (prices['прямые'][stage.stage] + 50)
