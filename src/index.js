@@ -2,6 +2,8 @@ const Controller = require('./controller')
 const permanent = require('./permanent')
 require('./loggerConfigurer')
 
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0
+
 const log4js = require('log4js')
 // const test = require('./test')
 const logger = log4js.getLogger('default')
