@@ -105,12 +105,27 @@ function getPublisherSalary(publisher) {
                     price += prices['обратки'][stage.stage] * publisher.square * (publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1) * (publisher.sides - 1)
             }
         } else if (stage.stage === 'Покраска') {
-            if (publisher.description.toLowerCase().match(/профиль|метал/))
-                price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Алюминиевый профиль']
-            else if (publisher.description.toLowerCase().match(/карниз|цоколь/) && publisher.description.toLowerCase().match(/пластик/))
-                price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Пластиковый карниз']
-            else if (publisher.description.toLowerCase().match(/карниз/))
-                price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Покраска']
+            if (publisher.description.toLowerCase().match(/профиль|метал/)) {
+                price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Алюминиевый профиль']["Покраска"] * publisher.sides
+                if (publisher.colourType && publisher.colourType?.match(/лак/))
+                    price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Алюминиевый профиль']['Лак']
+                if (publisher.colourType && publisher.colourType?.match(/лак2/))
+                    price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Алюминиевый профиль']['Лак']
+            }
+            else if (publisher.description.toLowerCase().match(/карниз|цоколь/) && publisher.description.toLowerCase().match(/пластик/)) {
+                price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Пластиковый карниз']["Покраска"] * publisher.sides
+                if (publisher.colourType && publisher.colourType?.match(/лак/))
+                    price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Пластиковый карниз']['Лак']
+                if (publisher.colourType && publisher.colourType?.match(/лак2/))
+                    price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Пластиковый карниз']['Лак']
+            }
+            else if (publisher.description.toLowerCase().match(/карниз/)) {
+                price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Покраска'] * publisher.sides
+                if (publisher.colourType && publisher.colourType?.match(/лак/))
+                    price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Лак']
+                if (publisher.colourType && publisher.colourType?.match(/лак2/))
+                    price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Лак']
+            }
             else {
                 if (publisher.H)
                     price += prices['ручки'][stage.stage] * publisher.amount
