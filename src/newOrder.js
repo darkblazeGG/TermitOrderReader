@@ -72,8 +72,10 @@ function newOrder(file) {
         })
 
         let publishers = rows.slice(1, rows.length).map(row => {
+            if (JSON.parse(ws['N7']?.v ? ws['N7']?.v?.match(/\d+/)[0] : ws['M7']?.v?.match(/\d+/)[0]) == 28)
+                console.log(row[rows[0].findIndex(row => row === '№')], row[rows[0].findIndex(row => row === 'Примечание')])
             let square = rows.filter(row => row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[2]) || row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[1]))
-                .map(row => row[rows[0].findIndex(row => row === 'Площадь')]).reduce((a, b) => a + b, 0) * 20 / 7 + rows.filter(row => !row[rows[0].findIndex(row => row === 'Примечание')].toLowerCase().match(Type[2]) && !row[rows[0].findIndex(row => row === 'Примечание')].toLowerCase().match(Type[1]))
+                .map(row => row[rows[0].findIndex(row => row === 'Площадь')]).reduce((a, b) => a + b, 0) * 20 / 7 + rows.filter(row => !row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[2]) && !row[rows[0].findIndex(row => row === 'Примечание')]?.toLowerCase().match(Type[1]))
                     .map(row => row[rows[0].findIndex(row => row === 'Площадь')]).splice(1,).reduce((a, b) => a + b, 0)
             let stages = [
                 {
