@@ -47,7 +47,7 @@ function newOrder(file) {
     return new Promise(resolve => {
         let workbook
         if (typeof file === 'string') {
-            console.log('reading file', file)
+            console.log('Читаю файл', file)
             workbook = XLSX.readFile(file)
         } else
             workbook = XLSX.read(file)
@@ -304,7 +304,6 @@ function newOrder(file) {
         let created = ws['N8']?.v ? ExcelDateToJSDate(ws['N8']?.v) : undefined
         if (!created)
             created = ws['M8']?.v ? ExcelDateToJSDate(ws['M8']?.v) : undefined
-        console.log(file)
         let lastDate = created + 31 * Day
         // let lastDate = workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v ? ExcelDateToJSDate(workbook.Sheets['СЧЕТ']['O' + JSON.parse(Object.keys(workbook.Sheets['СЧЕТ']).find(key => workbook.Sheets['СЧЕТ'][key].v === 'Дата готовности заказа').match(/\d+/)[0])]?.v) : undefined
         // if (!lastDate)
@@ -721,6 +720,7 @@ function newOrder(file) {
             snapshot: typeof XLSX.utils.sheet_to_html(ws) === 'string' && XLSX.utils.sheet_to_html(ws).match(/<table>.+<\/table>/) && XLSX.utils.sheet_to_html(ws).match(/<table>.+<\/table>/)[0].length <= 32768 ? XLSX.utils.sheet_to_html(ws).match(/<table>.+<\/table>/)[0] : null,
             costumer: 'Null'//workbook.Sheets['СЧЕТ']['P6']?.v || workbook.Sheets['СЧЕТ']['O6']?.v,
         }
+        console.log('Файл', file, 'прочитан успешно')
 
         return resolve(order)
     })
