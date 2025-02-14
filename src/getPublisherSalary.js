@@ -105,7 +105,9 @@ function getPublisherSalary(publisher) {
                     price += prices['обратки'][stage.stage] * publisher.square * (publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1) * (publisher.sides - 1)
             }
         } else if (stage.stage === 'Покраска') {
-            if (publisher.description.toLowerCase().match(/профиль|метал/)) {
+            if (publisher.description.toLowerCase().match(/профиль|метал/) || publisher.description.toLowerCase().match(/ручка голо/)) {
+                if (publisher.description.toLowerCase().match(/\(грунтуем\)/))
+                    price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Алюминиевый профиль']["Грунт"] * publisher.sides
                 price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Алюминиевый профиль']["Покраска"] * publisher.sides
                 if (publisher.colourType && publisher.colourType?.match(/лак/))
                     price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Алюминиевый профиль']['Лак']
@@ -131,7 +133,7 @@ function getPublisherSalary(publisher) {
                     price += prices['ручки'][stage.stage] * publisher.amount
                 if (!stage.index)
                     price += prices['прямые'][stage.stage] * publisher.square * (/* !publisher.T && */ publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
-                if (stage.index)
+                if (stage.index === 1)
                     price += prices['обратки'][stage.stage] * publisher.square * (/* !publisher.T &&  */publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1) * (publisher.sides - 1)
                 if (publisher.colourType && publisher.colourType?.match(/лак/) && !stage.index)
                     price += prices['лак']['односторонний'] * publisher.square * (/* !publisher.T &&  */publisher.description.toLowerCase().includes('в сборе') ? 1.5 : 1)
