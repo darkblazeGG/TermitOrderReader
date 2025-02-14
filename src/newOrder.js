@@ -436,7 +436,7 @@ function newOrder(file) {
                             else if (publishers.filter(({ description }) => !sFs.find(sF => description.toLowerCase().includes(sF))).length === publishers.length)
                                 price = 0.5 * prices['фрезированные'][stage.stage]
 
-                    if (stage.stage === 'Покраска')
+                    if (stage.stage === 'Покраска' && !publisher.description.toLowerCase().match(/профиль|метал/) && !(publisher.description.toLowerCase().match(/карниз|цоколь/) && publisher.description.toLowerCase().match(/пластик/)))
                         if (publishers.filter(({ sides }) => sides === 2).length === publishers.length || publishers.filter(({ sides }) => sides === 1.5).length === publishers.length || publishers.filter(({ sides }) => sides === 1).length === publishers.length)
                             if (publishers.filter(({ colourType }) => colourType && typeof colourType === 'string' && colourType.toLowerCase().includes('лак2')).length === publishers.length)
                                 if (!stage.index)
