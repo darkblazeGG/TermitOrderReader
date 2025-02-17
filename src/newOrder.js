@@ -509,6 +509,7 @@ function newOrder(file) {
                         price += publishers.filter(({ H }) => H).map(({ amount }) => amount).reduce((a, b) => a + b, 0) * (prices['ручки'][stage.stage] || 0)
                 }
 
+            console.log(stages.find(({ stage }) => stage.includes('Покраска')).price)
             let addition = []
             if (publishers.find(({ stages }) => stages.find(({ stage }) => stage === 'Подготовка к изолятору')) && stage.stage.match(/Подготовка|Распил/))
                 addition.push(`Ф: ${round(publishers.filter(({ stages }) => stages.find(({ stage }) => stage === 'Подготовка к изолятору')).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`)
@@ -621,6 +622,7 @@ function newOrder(file) {
                         addition: `Т: ${round(publishers.filter(({ T, stages }) => T && stages.find(({ stage }) => stage === 'Покраска')).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`,
                     })
         }
+        console.log(stages.find(({ stage }) => stage.includes('Покраска')).price)
 
         let last = created
         while ([0, 6].includes(new Date(last).getDay()))
