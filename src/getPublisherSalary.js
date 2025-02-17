@@ -122,11 +122,15 @@ function getPublisherSalary(publisher) {
                     price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Пластиковый карниз']['Лак']
             }
             else if (publisher.description.toLowerCase().match(/карниз/)) {
+                console.log('test')
                 price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Покраска'] * publisher.sides
+                console.log(price)
                 if (publisher.colourType && publisher.colourType?.match(/лак/))
                     price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Лак']
+                console.log(price)
                 if (publisher.colourType && publisher.colourType?.match(/лак2/))
                     price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Лак']
+                console.log(price)
             }
             else {
                 if (publisher.H)
