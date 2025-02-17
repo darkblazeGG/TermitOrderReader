@@ -413,6 +413,7 @@ function newOrder(file) {
             })
 
         stages = stages.filter(stage => publishers.find(({ stages }) => stages.find(item => item.stage === stage.stage)))
+        console.log(publishers.map(({ stages }) => stages.find(({ stage }) => stage === 'Покраска').price))
         stages = stages.map(stage => {
             let value = round(publishers.filter(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)
             let price = publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0)
@@ -511,7 +512,6 @@ function newOrder(file) {
                         price += publishers.filter(({ H }) => H).map(({ amount }) => amount).reduce((a, b) => a + b, 0) * (prices['ручки'][stage.stage] || 0)
                 }
 
-            console.log(stages.find(({ stage }) => stage.includes('Покраска')).price)
             let addition = []
             if (publishers.find(({ stages }) => stages.find(({ stage }) => stage === 'Подготовка к изолятору')) && stage.stage.match(/Подготовка|Распил/))
                 addition.push(`Ф: ${round(publishers.filter(({ stages }) => stages.find(({ stage }) => stage === 'Подготовка к изолятору')).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`)
