@@ -413,12 +413,9 @@ function newOrder(file) {
             })
 
         stages = stages.filter(stage => publishers.find(({ stages }) => stages.find(item => item.stage === stage.stage)))
-        console.log(publishers.map(({ stages }) => stages.find(({ stage }) => stage === 'Покраска').price))
         stages = stages.map(stage => {
             let value = round(publishers.filter(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)
             let price = publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0)
-            if (stage.stage === 'Покраска')
-                console.log(price)
             if (price != 0 /* && publishers.filter(({ H }) => H).length === publishers.length || publishers.filter(({ H }) => !H).length === publishers.length */)
                 if (value <= 0.5) {
                     if (stage.stage.includes('Подготовка') || stage.stage === 'Нанесение грунта')
@@ -624,7 +621,6 @@ function newOrder(file) {
                         addition: `Т: ${round(publishers.filter(({ T, stages }) => T && stages.find(({ stage }) => stage === 'Покраска')).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)}`,
                     })
         }
-        console.log(stages.find(({ stage }) => stage.includes('Покраска')).price)
 
         let last = created
         while ([0, 6].includes(new Date(last).getDay()))
@@ -725,7 +721,6 @@ function newOrder(file) {
             costumer: 'Null'//workbook.Sheets['СЧЕТ']['P6']?.v || workbook.Sheets['СЧЕТ']['O6']?.v,
         }
         console.log('Файл', file, 'прочитан успешно')
-        console.log(order.stages.find(({ stage }) => stage.includes('Покраска')).price)
 
         return resolve(order)
     })
