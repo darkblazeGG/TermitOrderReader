@@ -128,8 +128,10 @@ function getPublisherSalary(publisher) {
                 if (publisher.colourType && publisher.colourType?.match(/лак/))
                     price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Лак']
                 console.log(price)
+                console.log(Math.max(publisher.height, publisher.width) / 1000 * publisher.amount, prices['Карнизы МДФ']['Лак'])
                 if (publisher.colourType && publisher.colourType?.match(/лак2/))
                     price += Math.max(publisher.height, publisher.width) / 1000 * publisher.amount * prices['Карнизы МДФ']['Лак']
+                console.log(price)
                 console.log(price)
             }
             else {
