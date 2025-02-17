@@ -721,6 +721,7 @@ function newOrder(file) {
             costumer: 'Null'//workbook.Sheets['СЧЕТ']['P6']?.v || workbook.Sheets['СЧЕТ']['O6']?.v,
         }
         console.log('Файл', file, 'прочитан успешно')
+        console.log(order.stages.find(({ stage }) => stage.includes('Покраска')).price)
 
         return resolve(order)
     })
