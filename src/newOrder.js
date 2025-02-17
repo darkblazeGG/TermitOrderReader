@@ -416,6 +416,8 @@ function newOrder(file) {
         stages = stages.map(stage => {
             let value = round(publishers.filter(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).map(({ square }) => square).reduce((a, b) => a + b, 0), 2)
             let price = publishers.map(({ stages }) => stages.find(item => item.stage === stage.stage && item.index === stage.index)).filter(stage => stage).map(({ price }) => price).reduce((a, b) => a + b, 0)
+            if (stage.stage === 'Покраска')
+                console.log(price)
             if (price != 0 /* && publishers.filter(({ H }) => H).length === publishers.length || publishers.filter(({ H }) => !H).length === publishers.length */)
                 if (value <= 0.5) {
                     if (stage.stage.includes('Подготовка') || stage.stage === 'Нанесение грунта')
